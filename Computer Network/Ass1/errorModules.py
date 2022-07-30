@@ -158,13 +158,6 @@ class CRC:
                 # print(messageData)
                 output += messageData
             else:
-                print(i)
                 errorFound = True
         
         return output, errorFound
-
-
-
-# print(CRC.encode("1010101010", 10, "11001"))
-# print(CRC.decode("10101010100010", 14, "11001"))
-# print("01".zfill(4))
