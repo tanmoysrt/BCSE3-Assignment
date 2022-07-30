@@ -148,9 +148,10 @@ def generateDivisor(input:List):
 
 # Divide function for CRC
 def divisonCRC(input:str, divisor:str):
-    if input == '' or divisor == '':
+    if divisor == '':
         raise Exception("Invalid input")
-    
+    if input == '':
+        input = '0'
     input = str(int(input))
     divisor = str(int(divisor))
 
