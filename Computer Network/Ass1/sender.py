@@ -1,8 +1,7 @@
 import random
-from traceback import print_tb
 
 from helper import StringToBinary, generateDivisor, polynomialStringParser
-from errorModules import CRC, VRC, LRC, CheckSum
+from errorDetectionModules import CRC, VRC, LRC, CheckSum
 from config import availableCRCPolynomials
 
 # ? Sender Class

@@ -1,6 +1,5 @@
-from fileinput import filename
 from helper import BinaryToString, ReadNoOfZerosAndOnes, buildFrames, generateDivisor, polynomialStringParser
-from errorModules import CRC, VRC, LRC, CheckSum
+from errorDetectionModules import CRC, VRC, LRC, CheckSum
 from config import availableCRCPolynomials
 
 
