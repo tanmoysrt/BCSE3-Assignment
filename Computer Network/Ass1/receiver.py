@@ -110,7 +110,7 @@ if __name__ == "__main__":
     outputFilename = "assets/receiver_output.txt" if outputFilename == '' else outputFilename
     tmpFilename = outputFilename.split(".")[0]
 
-    receiver.writeOutputToFile(filename=tmpFilename+"_binary.text", binary=True)
+    receiver.writeOutputToFile(filename=tmpFilename+"_binary.txt", binary=True)
     receiver.writeOutputToFile(filename=tmpFilename+"_data.txt", binary=False)
 
     # ! Print data
@@ -120,7 +120,7 @@ if __name__ == "__main__":
     print("Output Binary          : ", receiver.output)
     print("Output Data            : ", receiver.outputData)
     print("Status                 : ", "FAILED" if receiver.errorFound else "PASS")
-    print("Written binary output in file : ", tmpFilename+"_binary.text")
-    print("Written binary output in file : ", tmpFilename+"_data.text")
+    print("Written binary output in file : ", tmpFilename+"_binary.txt")
+    print("Written binary output in file : ", tmpFilename+"_data.txt")
     print("=========================================================================================")
         
