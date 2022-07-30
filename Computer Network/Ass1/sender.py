@@ -1,7 +1,7 @@
 import random
 
 from helper import StringToBinary
-from errorModules import VRC, LRC, CheckSum
+from errorModules import CRC, VRC, LRC, CheckSum
 
 
 class Sender:
@@ -23,6 +23,7 @@ class Sender:
             for i in f.readlines():
                 t += i
         self.input = StringToBinary(t.replace('\n', '')) if not binary else t.replace('\n', '')
+        print(self.input)
 
     def writeOutputToFile(self, filename):
         if self.output == "": raise Exception("Output is empty ! Nothing to save")
@@ -36,27 +37,31 @@ class Sender:
             random_bit_location = random.randint(0, len(self.output)-1)
             self.output = self.output[:random_bit_location] +  ['0','1'][random.randint(0,1)] + self.output[random_bit_location+1:]
 
-    # Encode Related Functions
-
+    # Encode Related Wrapper unctions
     # VRC Encoding
     def encodeUsingVRC(self):
         self.output = VRC.encode(self.input, self.dataWordFrameSize)
 
     # LRC Encoding
-    def encodeUsingLRC(self, noOfFrames=4):
-        self.output = LRC.encode(self.input, self.dataWordFrameSize, noOfFrames)
+    def encodeUsingLRC(self, noOfOriginalDataFramesPerGroup=4):
+        self.output = LRC.encode(self.input, self.dataWordFrameSize, noOfOriginalDataFramesPerGroup)
 
     # Checksum Encoding
-    def encodeUsingChecksum(self, noOfFrames=4):
-        self.output = CheckSum.encode(self.input, self.dataWordFrameSize, noOfFrames)
+    def encodeUsingChecksum(self, noOfOriginalDataFramesPerGroup=4):
+        self.output = CheckSum.encode(self.input, self.dataWordFrameSize, noOfOriginalDataFramesPerGroup)
+
+    # CRC Encoding
+    def encodeUsingCRC(self, divisor):
+        self.output = CRC.encode(self.input, self.dataWordFrameSize, divisor)
 
 
 # Run the program
 sender = Sender(dataWordFrameSize=8)
 sender.readInputFromFile(filename="./assets/sender_input.txt", binary=False)
-# sender.encode(method="VRC")
+# sender.encodeUsingVRC()
 # sender.encode(method="LRC")
-# sender.encodeUsingLRC(noOfFrames=4)
-sender.encodeUsingChecksum(noOfFrames=4)
-sender.injectErrorInOutput(loopC=10)
+# sender.encodeUsingLRC(noOfOriginalDataFramesPerGroup=4)
+# sender.encodeUsingChecksum(noOfOriginalDataFramesPerGroup=4)
+sender.encodeUsingCRC(divisor="11001")
+# sender.injectErrorInOutput(loopC=10)
 sender.writeOutputToFile(filename="assets/sender_output.txt")

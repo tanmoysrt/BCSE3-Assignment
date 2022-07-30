@@ -1,10 +1,10 @@
-from distutils.log import error
-from helper import ReadNoOfZerosAndOnes, addBinaryStringUsingOnesComplement, buildFrames, complementOfBinaryString
+from math import remainder
+from helper import ReadNoOfZerosAndOnes, addBinaryStringUsingOnesComplement, buildFrames, complementOfBinaryString, divisonCRC
 
 
 class VRC:
     @staticmethod
-    def encode(binaryInputString, dataWordFrameSize):
+    def encode(binaryInputString:str, dataWordFrameSize:int):
         # ? Even Parity VRC
         output = ""
         for i in buildFrames(binaryInputString, dataWordFrameSize):
@@ -13,8 +13,8 @@ class VRC:
         return output
 
     @staticmethod
-    def decode(binaryInputString, codeWordFrameSize):
-        frames = buildFrames(binaryInputString, codeWordFrameSize)
+    def decode(binaryInputString:str, dataWordFrameSize):
+        frames = buildFrames(binaryInputString, dataWordFrameSize+1)
         errorFound = False
         output = ""
         for i in frames:
@@ -28,10 +28,9 @@ class VRC:
 
         return output, errorFound
 
-
 class LRC:
     @staticmethod
-    def encode(binaryInputString, dataWordFrameSize, noOfOriginalDataFramesPerGroup=4):
+    def encode(binaryInputString:str, dataWordFrameSize:int, noOfOriginalDataFramesPerGroup:int=4):
         output = ""
         frames = buildFrames(binaryInputString, dataWordFrameSize)
         # Check whether we can split in to equal length of frames
@@ -60,7 +59,7 @@ class LRC:
         return output
 
     @staticmethod
-    def decode(binaryInputString, dataWordFrameSize, noOfOriginalDataFramesPerGroup=4):
+    def decode(binaryInputString:str, dataWordFrameSize:int, noOfOriginalDataFramesPerGroup:int=4):
         # Split frames from data
         frames = buildFrames(binaryInputString, dataWordFrameSize)
         errorFound = False
@@ -88,7 +87,7 @@ class LRC:
 
 class CheckSum:
     @staticmethod
-    def encode(binaryInputString, dataWordFrameSize, noOfOriginalDataFramesPerGroup=4):
+    def encode(binaryInputString:str, dataWordFrameSize:int, noOfOriginalDataFramesPerGroup:int=4):
         output = ""
         frames = buildFrames(binaryInputString, dataWordFrameSize)
         # Check whether we can split in to equal length of frames
@@ -113,7 +112,7 @@ class CheckSum:
         return output
 
     @staticmethod
-    def decode(binaryInputString, dataWordFrameSize, noOfOriginalDataFramesPerGroup=4):
+    def decode(binaryInputString:str, dataWordFrameSize:int, noOfOriginalDataFramesPerGroup:int=4):
         output = ""
         frames = buildFrames(binaryInputString, dataWordFrameSize)
         errorFound = False
@@ -136,3 +135,36 @@ class CheckSum:
         
         return output, errorFound
 
+class CRC:
+    @staticmethod
+    def encode(binaryInputString:str, dataWordFrameSize:int, divisor:str):
+        output = ""
+        crcSize = len(divisor)-1
+        for i in buildFrames(binaryInputString, dataWordFrameSize):
+            tmp = i+crcSize*"0" # [max degree of polynomial] times 0
+            crc = divisonCRC(tmp, divisor)[:crcSize]
+            output += i+crc.zfill(crcSize)
+        return output
+
+    @staticmethod
+    def decode(binaryInputString:str, dataWordFrameSize:int, divisor:str):
+        output = ""
+        errorFound = False
+        crcSize = len(divisor)-1
+        for i in buildFrames(binaryInputString, dataWordFrameSize+crcSize):
+            remainder = divisonCRC(i, divisor)
+            if remainder == 0 or remainder == '0':
+                messageData = i[:-crcSize]
+                # print(messageData)
+                output += messageData
+            else:
+                print(i)
+                errorFound = True
+        
+        return output, errorFound
+
+
+
+# print(CRC.encode("1010101010", 10, "11001"))
+# print(CRC.decode("10101010100010", 14, "11001"))
+# print("01".zfill(4))
