@@ -146,32 +146,49 @@ def generateDivisor(input:List):
         divisor += ("1" if i[1] != 0 else "0")
     return divisor
 
+# XOR List
+def xor_list(a, b):
+
+	# initialize result
+	result = []
+
+	# Traverse all bits, if bits are
+	# same, then XOR is 0, else 1
+	for i in range(1, len(a)):
+		if a[i] == b[i]:
+			result.append('0')
+		else:
+			result.append('1')
+
+	return ''.join(result)
+
 # Divide function for CRC
 def divisonCRC(input:str, divisor:str):
-    if divisor == '':
-        raise Exception("Invalid input")
-    if input == '':
-        input = '0'
     input = str(int(input))
     divisor = str(int(divisor))
 
     # If input is longer than divisor, return input 
     if len(input) < len(divisor):
         return input
-
-    tmp = input[:len(divisor)]
-    cursor = len(divisor)-1
-
-    while cursor != len(input)-1:
-        while len(tmp) < len(divisor):
-            if cursor == len(input)-1: break
-            cursor += 1
-            tmp = tmp + input[cursor]
         
-        # if cursor == len(input)-1: break/
-        tmp = XOR_List(tmp, divisor)
+    pick = len(divisor)
+    tmp = input[0 : pick]
+    
+    while pick < len(input):
+        if tmp[0] == '1':
+            tmp = xor_list(tmp, divisor) + input[pick]
+        else:
+            tmp = xor_list(tmp, '0'*pick) + input[pick]
+        
+        pick += 1
 
-    return str(int(tmp))
+    if tmp[0] == '1':
+        tmp = xor_list(tmp, divisor)
+    else:
+        tmp = xor_list(tmp, '0'*pick)
+
+    checkword = tmp
+    return checkword
 
 
 
