@@ -187,8 +187,7 @@ def divisonCRC(input:str, divisor:str):
     else:
         tmp = xor_list(tmp, '0'*pick)
 
-    checkword = tmp
-    return checkword
+    return str(int(tmp))
 
 
 
