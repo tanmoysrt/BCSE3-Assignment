@@ -21,8 +21,8 @@ class Channel(SocketServer):
 
 
 
-
-# tmp = Channel(host='127.0.0.1', port=8081)
-# tmp.start()
-# tmp.startAcceptConnections()
-# SocketServer.modifyData('Hello')
+if __name__ == "__main__":
+    print("Socket Server[Channel] is starting....")
+    server = Channel(host='127.0.0.1', port=8081)
+    server.start()
+    server.startAcceptConnections()
