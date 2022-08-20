@@ -12,7 +12,6 @@ else
 fi
 
 lines=0
-contentFile=$(<$FILENAME)
 # Count lines
 while read line; do
     lines=$(($lines+1))
