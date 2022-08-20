@@ -1,0 +1,22 @@
+tanmoy % display greeting % Sat 20 Aug 15:09:36 IST 2022
+tanmoy % list large files % Sat 20 Aug 15:09:41 IST 2022
+tanmoy % disk usage % Sat 20 Aug 15:09:43 IST 2022
+tanmoy % display greeting % Sat 20 Aug 15:11:01 IST 2022
+tanmoy % view log file % Sat 20 Aug 15:11:15 IST 2022
+tanmoy % view log file % Sat 20 Aug 15:16:18 IST 2022
+tanmoy % list large files % Sat 20 Aug 15:44:02 IST 2022
+tanmoy % list large files % Sat 20 Aug 15:44:25 IST 2022
+tanmoy % list large files % Sat 20 Aug 15:44:36 IST 2022
+tanmoy % list large files % Sat 20 Aug 15:45:04 IST 2022
+tanmoy % list large files % Sat 20 Aug 15:45:23 IST 2022
+tanmoy % list large files % Sat 20 Aug 15:46:06 IST 2022
+tanmoy % list large files % Sat 20 Aug 15:47:09 IST 2022
+tanmoy % list large files % Sat 20 Aug 15:47:26 IST 2022
+tanmoy % list large files % Sat 20 Aug 15:48:04 IST 2022
+tanmoy % list large files % Sat 20 Aug 15:48:42 IST 2022
+tanmoy % list large files % Sat 20 Aug 15:48:52 IST 2022
+tanmoy % list large files % Sat 20 Aug 15:49:02 IST 2022
+tanmoy % list large files % Sat 20 Aug 15:50:15 IST 2022
+tanmoy % list large files % Sat 20 Aug 15:50:55 IST 2022
+tanmoy % list large files % Sat 20 Aug 15:51:48 IST 2022
+tanmoy % list large files % Sat 20 Aug 15:53:14 IST 2022
