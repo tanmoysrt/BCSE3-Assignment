@@ -9,7 +9,6 @@ class Channel(SocketServer):
 
     @staticmethod
     def modifyData(data):
-        print(data)
         return data
     
     @staticmethod
@@ -23,7 +22,15 @@ class Channel(SocketServer):
 
 
 if __name__ == "__main__":
-    print("Socket Server[Channel] is starting....")
     server = Channel(host='127.0.0.1', port=8081)
-    server.start()
-    server.startAcceptConnections()
+    try:
+        print("Socket Server[Channel] is starting....")
+        server.start()
+        server.startAcceptConnections()
+    except KeyboardInterrupt:
+        server.closeAllConnections()
+        exit()
+    except Exception as e:
+        print(str(e))
+        server.closeAllConnections()
+        exit()
