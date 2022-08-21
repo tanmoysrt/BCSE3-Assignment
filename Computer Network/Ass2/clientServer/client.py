@@ -9,6 +9,7 @@ class Client:
         self.host = host
         self.port = port
         self.killed = False
+        self.condition = threading.Condition()
 
     def connectToServer(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -24,15 +25,6 @@ class Client:
         self.receiverThread = threading.Thread(target=self.receiveData)
         self.receiverThread.start()
         self.senderThread.start()
-        try:
-            self.senderThread.join()
-        except:
-            pass
-        try:
-            self.receiverThread.join()
-        except:
-            pass
-        self.closeConnection()
 
     @abstractmethod
     def sendData(self):
@@ -50,7 +42,10 @@ class Client:
         if self.killed : return
         self.killed = True
         print('Closing connection')
-        time.sleep(2)
+        self.condition.acquire()
+        self.condition.notifyAll()
+        self.condition.release()
+
         try:
             self.sock.close()
         except socket.error as e:
