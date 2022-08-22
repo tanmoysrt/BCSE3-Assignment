@@ -1,4 +1,4 @@
-from socketServer import SocketServer
+from clientServer.socketServer import SocketServer
 import random
 
 class Channel(SocketServer):
@@ -9,6 +9,7 @@ class Channel(SocketServer):
 
     @staticmethod
     def modifyData(data):
+        # return data
         if data in ["ack:", "end:", "disconnect:"]:
             return data
         return Channel.injectErrorInData(data, loopC=1)

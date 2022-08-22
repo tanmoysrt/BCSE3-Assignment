@@ -1,5 +1,6 @@
+from datetime import datetime
 import threading
-from time import sleep
+from time import sleep, time
 
 from clientServer.client import Client
 from queue import Queue
@@ -17,6 +18,7 @@ class Sender(Client):
         self.dataBuffer = Queue()
         self.timer = None
         self.readyToLoadData = True
+        self.requestSendTime = 0
 
     def setupBeforeProcess(self):
         receiver_ip = input("Enter receiver ip: ")
@@ -82,6 +84,7 @@ class Sender(Client):
                 self.closeConnection()
                 break
             elif data == "ack:":
+                self.printRoundTripTime()
                 self.condition.acquire()
                 self.acknowledgementReceived = True
                 self.cancelTimer()
@@ -117,10 +120,13 @@ class Sender(Client):
             self.timer.cancel()
 
     def startTimer(self):
-        # return
+        self.requestSendTime = datetime.now()
         self.cancelTimer()
         self.timer = threading.Timer(self.requestTimeout, self.resendFrame)
         self.timer.start()
+
+    def printRoundTripTime(self):
+        print(f"Round trip time: {(datetime.now() - self.requestSendTime).microseconds} microseconds")
     
 if __name__ == '__main__':
     sender = Sender('127.0.0.1', 8081, 1)
