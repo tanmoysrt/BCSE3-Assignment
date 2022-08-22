@@ -12,18 +12,15 @@ class Sender(Client):
     def __init__(self, host, port, requestTimeout):
         super().__init__(host, port)
         self.requestTimeout = requestTimeout
-        self.dataBuffer = Queue()
-
-        # State variables
         self.acknowledgementReceived = False
         self.newData = False
         self.isResendFrame = False
+        self.dataBuffer = Queue()
         self.timer = None
         self.readyToLoadData = True
         self.requestSendTime = 0
 
     def setupBeforeProcess(self):
-        # Configure the receiver
         receiver_ip = input("Enter receiver ip: ")
         receiver_port = input("Enter receiver port: ")
         self.sock.sendall(str.encode(f'connect:{receiver_ip}:{receiver_port}'))
@@ -36,38 +33,8 @@ class Sender(Client):
                 break
             try:
                 self.condition.acquire()
-                if self.newData:
-                    # If new data loads send it
-                    lastFrameSent = self.dataBuffer.get()
-                    self.sock.sendall(str.encode(lastFrameSent))
-                    self.newData = False # Reset new data flag
-                    # Start timer
-                    self.startTimer()                
 
-
-                elif self.isResendFrame:
-                    # Resend old frame
-                    self.sock.sendall(str.encode(lastFrameSent))
-                    self.isResendFrame = False
-                    self.acknowledgementReceived = False
-                    self.startTimer()
-
-                elif self.acknowledgementReceived:
-                    self.acknowledgementReceived = False
-                    # Send next frame
-                    if self.dataBuffer.empty():
-                        self.sock.sendall(str.encode("end:"))
-                        self.cancelTimer()
-                        sleep(0.05)
-                        
-                        self.readyToLoadData = True
-                        self.isResendFrame = False
-                        self.condition.notifyAll()
-                    else:
-                        lastFrameSent = self.dataBuffer.get()
-                        self.sock.sendall(str.encode(lastFrameSent))
-                        # Start timer
-                        self.startTimer()
+                # TODO Write code
                 
                 self.condition.wait()
                 self.condition.release()
@@ -86,18 +53,9 @@ class Sender(Client):
             if data == 'disconnect:':
                 self.closeConnection()
                 break
-            elif data == "ack:":
-                # Print round trip time
-                self.printRoundTripTime()
 
-                # Update `acknowledgementReceived` to notify the sender thread that the acknowledgement has been received
-                self.condition.acquire()
-                self.acknowledgementReceived = True
-                self.cancelTimer()
-                self.condition.notifyAll()
-                self.condition.release()
+            # TODO Write code
 
-    # Feed data to queue for sending
     def setDataForSending(self, data):
         self.condition.acquire()
         while not self.readyToLoadData:
@@ -116,7 +74,6 @@ class Sender(Client):
         self.condition.release()
 
     def resendFrame(self):
-        # Update `isResendFrame` to notify the sender thread that the last frame has to be resent
         print("Resending frame")
         self.condition.acquire()
         self.isResendFrame = True

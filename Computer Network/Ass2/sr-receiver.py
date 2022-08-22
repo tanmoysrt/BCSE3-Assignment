@@ -19,7 +19,7 @@ class Receiver(Client):
             try:
                 self.condition.acquire()
                 if self.sendAcknowledgement:
-                    self.sock.sendall(str.encode("ack:"))
+                    # TODO acknowledge data
                     self.sendAcknowledgement = False
                 # Wait for receiveData thread to receive data
                 self.condition.wait()
@@ -40,22 +40,9 @@ class Receiver(Client):
             if data == 'disconnect:':
                 self.closeConnection()
                 break
-            elif data == "end:":
-                print("Received data : ", self.data)
-                self.data = ""
-            else:
-                # Check data is OK or not
-                if self.isValidData(data):
-                    self.data = self.data + data[:-1]
-                    self.sendAcknowledgement = True
-                    self.condition.acquire()
-                    self.condition.notifyAll()
-                    self.condition.release()
-                else:
-                    self.sendAcknowledgement = False
+            # TODO write code
 
     def isValidData(self, data):
-        # VRC event parity
         _ , noOfOnes = ReadNoOfZerosAndOnes(data)
         if noOfOnes % 2 == 0:
             return True
