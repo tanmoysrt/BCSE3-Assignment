@@ -1,7 +1,3 @@
-from random import randint, random
-import threading
-from time import sleep, time
-from traceback import print_tb
 from clientServer.client import Client
 from errorDetectionModules.helper import ReadNoOfZerosAndOnes
 

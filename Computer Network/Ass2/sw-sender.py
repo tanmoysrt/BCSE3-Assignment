@@ -53,7 +53,7 @@ class Sender(Client):
                     if self.dataBuffer.empty():
                         self.sock.sendall(str.encode("end:"))
                         self.cancelTimer()
-                        sleep(0.1)
+                        sleep(0.05)
                         
                         self.readyToLoadData = True
                         self.isResendFrame = False
@@ -95,7 +95,7 @@ class Sender(Client):
 
         frames = buildFrames(data, 8)
         for i in frames:
-            _ , noOfOnes = ReadNoOfZerosAndOnes(data)
+            _ , noOfOnes = ReadNoOfZerosAndOnes(i)
             partiyBit = "0" if (noOfOnes % 2) == 0 else "1"
             self.dataBuffer.put(i+partiyBit)
         
@@ -123,13 +123,21 @@ class Sender(Client):
         self.timer.start()
     
 if __name__ == '__main__':
-    sender = Sender('127.0.0.1', 8081, 2)
+    sender = Sender('127.0.0.1', 8081, 1)
     try:
         sender.connectToServer()
         sender.startProcess()
         sender.setDataForSending("1000000101111110")
         sender.setDataForSending("0111111010000001")
         sender.setDataForSending("0100011010111001")
+         
+        while True:
+            sender.condition.acquire()
+            while not sender.readyToLoadData:
+                sender.condition.wait()
+            sender.condition.release()
+            data = input("Enter data: ")
+            sender.setDataForSending(data)
     except KeyboardInterrupt:
         sender.closeConnection()
         exit()

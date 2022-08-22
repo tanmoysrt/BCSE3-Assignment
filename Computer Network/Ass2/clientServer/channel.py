@@ -15,10 +15,11 @@ class Channel(SocketServer):
     
     @staticmethod
     def injectErrorInData(data, loopC=5):
+        olddata = data
         for _ in range(loopC):
             random_bit_location = random.randint(0, len(data)-1)
             data = data[:random_bit_location] +  ['0','1'][random.randint(0,1)] + data[random_bit_location+1:]
-        print("Injected error in data: ", data)
+        print("Injected Error : "+olddata+" ---> "+data)
         return data
 
 
