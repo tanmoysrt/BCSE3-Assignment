@@ -3,6 +3,7 @@ from clientServer.socketServer import SocketServer
 import random
 
 class Channel(SocketServer):
+    errorCount = 0
     def __init__(self, host, port):
         super().__init__(host, port)
         # Update modifyData static method of  SocketServer with  Channel's
@@ -18,10 +19,12 @@ class Channel(SocketServer):
     
     @staticmethod
     def injectErrorInData(data, loopC=5):
+        time.sleep(random.random()*5)
         olddata = data
         for _ in range(loopC):
             random_bit_location = random.randint(0, len(data)-1)
-            should_inject_error = random.randint(100, 999)%2 == 0
+            should_inject_error = Channel.errorCount % 13 == 0
+            Channel.errorCount += 1
             if should_inject_error:
                 data = data[:random_bit_location] +  ("0" if data[random_bit_location] == "1" else "1") + data[random_bit_location+1:]
         if olddata != data:
