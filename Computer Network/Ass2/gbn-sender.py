@@ -1,118 +1,108 @@
-from datetime import datetime
+import socket
 import threading
-from time import sleep, time
+from time import sleep
 
-from clientServer.client import Client
-from queue import Queue
+from helpers import buildFrames, decodeData, encodeData
 
-from errorDetectionModules.helper import ReadNoOfZerosAndOnes, buildFrames
 
-class Sender(Client):
+# FRAME FORMAT:
+# For a frame with length of 8, the format is:
+# [sn][data][parity]
+# [2 ][  8 ][  4   ]
 
-    def __init__(self, host, port, requestTimeout):
-        super().__init__(host, port)
-        self.requestTimeout = requestTimeout
-        self.acknowledgementReceived = False
-        self.newData = False
-        self.isResendFrame = False
-        self.dataBuffer = Queue()
-        self.timer = None
-        self.readyToLoadData = True
-        self.requestSendTime = 0
+# Ack frame format:
+# [sn][parity]
+# [ 4 ][  4   ]
 
-    def setupBeforeProcess(self):
+class Sender:
+    def __init__(self, host, port, timeout):
+        self.host = host
+        self.port = port
+        self.timeout = timeout
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock.connect((self.host, self.port))
+        self.ackReceivedEvent = threading.Event()
+        self.ackReceivedEvent.clear()
+
+        self.data = []
+        self.frameIndex = 0
+        self.sn = 0
+        self.snmax = 1
+
+        # Configure the receiver
         receiver_ip = input("Enter receiver ip: ")
+        if len(receiver_ip.strip()) == 0:
+            receiver_ip = "127.0.0.1"
         receiver_port = input("Enter receiver port: ")
         self.sock.sendall(str.encode(f'connect:{receiver_ip}:{receiver_port}'))
         sleep(1)
 
-    def sendData(self):
-        lastFrameSent = ""
-        while True:
-            if self.killed:
-                break
-            try:
-                self.condition.acquire()
+    def startProcess(self):
+        self.senderThread = threading.Thread(target=self.send)
+        self.receiverACKThread = threading.Thread(target=self.recvAck)
+        self.receiverACKThread.start()
+        self.senderThread.start()
 
-                # TODO Write code
-                
-                self.condition.wait()
-                self.condition.release()
-            except (BrokenPipeError, ConnectionResetError):
-                self.closeConnection()
-                break
-
-    def receiveData(self):
+    def send(self):
         while True:
-            if self.killed:
+            # Check frames
+            if self.frameIndex >= len(self.data):
+                print("No more frames to send")
                 break
+            # Prepare fram e-- by taking the sn and the element of window
+            frame = encodeData(str(self.sn).zfill(2)+self.data[self.frameIndex])
+            # Increase seq no
+            self.increaseSn()
+            # Icrease frame index
+            self.frameIndex += 1
+            # Send a frame 
+            self.sock.sendall(str.encode(frame))
+            # Wait for ack with a timeout
+            self.ackReceivedEvent.clear()
+            isNotified = self.ackReceivedEvent.wait(timeout=self.timeout)
+            if not isNotified:
+                self.frameIndex -= 1
+                self.decreaseSn()
+
+            # If timeout, resend the frame -- run the loop again
+            
+
+    def recvAck(self):
+        while True:
+            # Listen for data
             data = self.sock.recv(1024)
-            if not data:
-                break
-            data = data.decode('utf-8')
-            if data == 'disconnect:':
-                self.closeConnection()
-                break
+            data = data.decode()
+            # If ack is valid 
+            decodedData = decodeData(data)
+            if decodedData[0]:
+                seqNo = int(decodedData[1], 2)
+                # If ack sn == current sn, just emit ackreceived event
+                if seqNo != self.sn:
+                    # Else ack sn != current sn, set sn to ack sn , emit ackreceived event
+                    self.sn = seqNo
+                    # Set frame index to previous frame index
+                    self.frameIndex = max(self.frameIndex-1, 0)
 
-            # TODO Write code
+                # Emit ackreceived event
+                self.ackReceivedEvent.set()
 
-    def setDataForSending(self, data):
-        self.condition.acquire()
-        while not self.readyToLoadData:
-            self.condition.wait()
 
-        frames = buildFrames(data, 8)
+    def increaseSn(self):
+        self.sn += 1
+        if self.sn > self.snmax:
+            self.sn = 0
+
+    def decreaseSn(self):
+        self.sn -= 1
+        self.sn = max(self.sn, 0)
+
+    def pushData(self, data):
+        frames = buildFrames(data, frameSize=8)
         for i in frames:
-            _ , noOfOnes = ReadNoOfZerosAndOnes(i)
-            partiyBit = "0" if (noOfOnes % 2) == 0 else "1"
-            self.dataBuffer.put(i+partiyBit)
-        
-        self.newData = True
-        self.readyToLoadData = False
+            self.data.append(i)
 
-        self.condition.notifyAll()
-        self.condition.release()
 
-    def resendFrame(self):
-        print("Resending frame")
-        self.condition.acquire()
-        self.isResendFrame = True
-        self.condition.notifyAll()
-        self.condition.release()
 
-    def cancelTimer(self):
-        if self.timer is not None:
-            self.timer.cancel()
-
-    def startTimer(self):
-        self.requestSendTime = datetime.now()
-        self.cancelTimer()
-        self.timer = threading.Timer(self.requestTimeout, self.resendFrame)
-        self.timer.start()
-
-    def printRoundTripTime(self):
-        print(f"Round trip time: {(datetime.now() - self.requestSendTime).microseconds} microseconds")
-    
-if __name__ == '__main__':
-    sender = Sender('127.0.0.1', 8081, 1)
-    try:
-        sender.connectToServer()
-        sender.startProcess()
-        sender.setDataForSending("1000000101111110")
-        sender.setDataForSending("0111111010000001")
-        sender.setDataForSending("0100011010111001")
-         
-        while True:
-            sender.condition.acquire()
-            while not sender.readyToLoadData:
-                sender.condition.wait()
-            sender.condition.release()
-            data = input("Enter data: ")
-            sender.setDataForSending(data)
-    except KeyboardInterrupt:
-        sender.closeConnection()
-        exit()
-    except Exception as e:
-        print(str(e))
-        sender.closeConnection()
-        exit()
+sender = Sender('127.0.0.1', 8081, 2)
+sender.pushData("100000010111111001111110100000010100011010111001")
+sender.startProcess()

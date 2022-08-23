@@ -89,7 +89,7 @@ class SocketServer:
                         continue
                     # Send data to receiver    
                     receiverInstance.sendall(str.encode(SocketServer.modifyData(data)))
-                    print(f"{address} ---> {receiverAddress}")
+                    print(f"{address} ---> {receiverAddress} --> {data}")
 
             except (BrokenPipeError, ConnectionResetError, OSError):
                     print(f"Receiver {receiverAddress} is offline")

@@ -1,3 +1,4 @@
+import time
 from clientServer.socketServer import SocketServer
 import random
 
@@ -10,7 +11,8 @@ class Channel(SocketServer):
     @staticmethod
     def modifyData(data):
         # return data
-        if data in ["ack:", "end:", "disconnect:"]:
+        # return data
+        if data in ["disconnect:"]:
             return data
         return Channel.injectErrorInData(data, loopC=1)
     
@@ -19,8 +21,11 @@ class Channel(SocketServer):
         olddata = data
         for _ in range(loopC):
             random_bit_location = random.randint(0, len(data)-1)
-            data = data[:random_bit_location] +  ['0','1'][random.randint(0,1)] + data[random_bit_location+1:]
-        print("Injected Error : "+olddata+" ---> "+data)
+            should_inject_error = random.randint(100, 999)%2 == 0
+            if should_inject_error:
+                data = data[:random_bit_location] +  ("0" if data[random_bit_location] == "1" else "1") + data[random_bit_location+1:]
+        if olddata != data:
+            print("Injected Error : "+olddata+" ---> "+data)
         return data
 
 

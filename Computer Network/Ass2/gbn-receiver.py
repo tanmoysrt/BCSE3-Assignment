@@ -1,62 +1,73 @@
-from clientServer.client import Client
-from errorDetectionModules.helper import ReadNoOfZerosAndOnes
+import socket
+import threading
+
+from helpers import decodeData, generateACK
 
 
-class Receiver(Client):
-
+class Receiver:
     def __init__(self, host, port):
-        super().__init__(host, port)
-        self.data = ""
-        self.sendAcknowledgement = False
+        self.host = host
+        self.port = port
+        self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.sock.connect((self.host, self.port))
+        self.frameReceived = threading.Event()
+        self.frameReceived.clear()
 
-    def setupBeforeProcess(self):
-        pass
+        self.data = []
+        self.rn = 0
+        self.rnmax = 1
 
-    def sendData(self):
+
+    def startProcess(self):
+        self.sendACKThread = threading.Thread(target=self.sendACK)
+        self.receiverThread = threading.Thread(target=self.recv)
+        self.receiverThread.start()
+        self.sendACKThread.start()
+
+
+    def recv(self):
         while True:
-            if self.killed:
-                break
-            try:
-                self.condition.acquire()
-                if self.sendAcknowledgement:
-                    # TODO acknowledge data
-                    self.sendAcknowledgement = False
-                # Wait for receiveData thread to receive data
-                self.condition.wait()
-                self.condition.release()
-            except (BrokenPipeError, ConnectionResetError):
-                self.closeConnection()
-                break
-            
-
-    def receiveData(self):
-        while True:
-            if self.killed:
-                break
+            # Receieve data
             data = self.sock.recv(1024)
-            if not data:
-                break
-            data = data.decode('utf-8')
-            if data == 'disconnect:':
-                self.closeConnection()
-                break
-            # TODO write code
+            if data == "disconnect:" : break
+            data = data.decode()
+            # Decode data
+            decodedData = decodeData(data)
+            # Check if valid
+            if decodedData[0]:
+                # Extract frame and seq no
+                data = decodedData[1]
+                seqNo = int(data[:2], 2)
+                frame = data[2:]
+                # If seq no == rn, save data and send ack for next frame
+                if seqNo == self.rn:
+                    self.data.append(frame)
+                    self.increaseRn()
+                    self.frameReceived.set()
+                    self.printData()
+                # If seq no != rn, discard and send ack fagain
+                else:
+                    self.frameReceived.set()
 
-    def isValidData(self, data):
-        _ , noOfOnes = ReadNoOfZerosAndOnes(data)
-        if noOfOnes % 2 == 0:
-            return True
-        return False
+    def sendACK(self):
+        while True:
+            # Wait for frame received event
+            self.frameReceived.wait()
+            # Send ack for the frame
+            self.sock.sendall(str.encode(generateACK(self.rn, with_parity=True)))
+            # Clear frame received event
+            self.frameReceived.clear()
 
-if __name__ == '__main__':
-    receiver = Receiver('127.0.0.1', 8081)
-    try:
-        receiver.connectToServer()
-        receiver.startProcess()
-    except KeyboardInterrupt:
-        receiver.closeConnection()
-        exit()
-    except Exception as e:
-        print(str(e))
-        receiver.closeConnection()
-        exit()
+    def increaseRn(self):
+        self.rn += 1
+        if self.rn > self.rnmax:
+            self.rn = 0
+
+    def printData(self):
+        print("Data : ", end="", flush=True)
+        for i in self.data:
+            print(i, end="", flush=True)
+        print()
+
+receiver = Receiver("127.0.0.1", 8081)
+receiver.startProcess()
