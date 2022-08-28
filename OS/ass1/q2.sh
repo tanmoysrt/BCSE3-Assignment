@@ -8,7 +8,8 @@ if [ -f $FILENAME ]; then
 else
     echo "File does not exist"
     echo "Creating file"
-    touch $FILENAME
+    read  -p "Enter something to write in file : " content
+    echo $content >> $FILENAME
 fi
 
 lines=0
