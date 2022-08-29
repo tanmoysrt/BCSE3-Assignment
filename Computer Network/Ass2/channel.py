@@ -19,7 +19,7 @@ class Channel(SocketServer):
     
     @staticmethod
     def injectErrorInData(data, loopC=5):
-        time.sleep(random.random()*5)
+        # time.sleep(random.random())
         olddata = data
         for _ in range(loopC):
             random_bit_location = random.randint(0, len(data)-1)
