@@ -11,7 +11,7 @@ class Channel(SocketServer):
 
     @staticmethod
     def modifyData(data):
-        # return data
+        return data
         # return data
         if data in ["disconnect:"]:
             return data
@@ -23,7 +23,7 @@ class Channel(SocketServer):
         olddata = data
         for _ in range(loopC):
             random_bit_location = random.randint(0, len(data)-1)
-            should_inject_error = Channel.errorCount % 13 == 0
+            should_inject_error = Channel.errorCount % 5 == 0
             Channel.errorCount += 1
             if should_inject_error:
                 data = data[:random_bit_location] +  ("0" if data[random_bit_location] == "1" else "1") + data[random_bit_location+1:]

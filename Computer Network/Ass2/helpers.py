@@ -1,3 +1,6 @@
+from cmath import sqrt
+
+
 def ReadNoOfZerosAndOnes(input):
     noOfZeros = 0
     noOfOnes = 0
@@ -80,4 +83,8 @@ def divisonCRC(input:str, divisor:str):
 
     
 
-    
+def generateSequenceNumbers(windowSize):
+    x = int(sqrt(windowSize).real)
+    nmax = int('1'*x, 2)
+    sequenceNumbers = [i for i in range(nmax+1)]
+    return sequenceNumbers
