@@ -32,10 +32,14 @@ def decodeData(data, divisor="10011"):
         return (True, data[:-x])
     return (False, "")
 
-def generateACK(rn, with_parity=True):
+def generateACK(rn, with_parity=True, for_selective_repeat=False, isNak=False):
     # Convert rn to binary string of 8 length
     ack = str(bin(rn))[2:]
     ack = ack.zfill(4)
+
+    if for_selective_repeat:
+        ack = ('0' if isNak else '1') + ack
+
     if with_parity:
         ack = encodeData(ack, divisor="10011")
     return ack
