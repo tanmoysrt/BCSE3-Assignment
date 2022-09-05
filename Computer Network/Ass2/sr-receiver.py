@@ -81,11 +81,9 @@ class Receiver:
                     
                     if self.ackNeeded:
                         self.sendACK()
-            else:
-                # Corrupted frame
-                if not self.nakSent:
-                    self.sendNAK()
-                    self.nakSent = True
+                        self.ackNeeded = False
+                        self.nakSent = False
+                        
             self.printData()
 
     def sendACK(self):

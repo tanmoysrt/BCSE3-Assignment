@@ -50,8 +50,10 @@ class Sender:
     def startProcess(self):
         self.senderThread = threading.Thread(target=self.send)
         self.receiverACKThread = threading.Thread(target=self.recvAck)
+        self.resendFrameThread = threading.Thread(target=self.resendFrame)
         self.receiverACKThread.start()
         self.senderThread.start()
+        self.resendFrameThread.start()
 
     def send(self):
         while True:
@@ -98,6 +100,9 @@ class Sender:
                     # NAK
                     if self.sf < seqNo <= self.sn:
                         self.resendFrameAndSetTimer(seqNo)
+
+    def resendFrame(self):
+        pass
 
     def startTimer(self, seqNo):
         if self.timers[seqNo]:
