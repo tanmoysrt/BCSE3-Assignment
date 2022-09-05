@@ -42,6 +42,7 @@ def generateACK(rn, with_parity=True, for_selective_repeat=False, isNak=False):
 
     if with_parity:
         ack = encodeData(ack, divisor="10011")
+    print("res", ack)
     return ack
 
 

@@ -1,7 +1,9 @@
 from cmath import sqrt
+from queue import Queue
 import socket
 import threading
 from time import sleep
+from tkinter import N
 
 from helpers import buildFrames, decodeData, encodeData
 from queuec import QueueC
@@ -29,7 +31,7 @@ class Sender:
 
         self.N = N
 
-        self.data = QueueC()
+        self.data = []
         self.sf = 0
         self.sn = 0
 
@@ -37,14 +39,14 @@ class Sender:
         tmp = int(sqrt(N).real)
         self.snmax = 2**tmp-1
 
-        self.sn = self.snmax
+        self.sn = 0
 
         self.ackStatus = [0]*self.N
         # 0 -> not sent
         # 1 -> sent
         # 2 -> acked
 
-        self.resendFramesSeqNo = set()
+        self.resendFramesSeqNo = Queue()
 
         # Window frame status
         self.timers = [None]*self.N
@@ -65,52 +67,56 @@ class Sender:
 
     def send(self):
         while True:
-            # Check frames
-            if self.data.isEmpty():
-                print("No more frames to send")
+            if self.sf >= len(self.data):
+                print("end....")
                 break
+            # Check frames
+            # if self.data.isEmpty():
+            #     print("No more frames to send")
+            #     break
 
             # Resend frames
-            tmpResendFrames = list(self.resendFramesSeqNo)
-            if len(tmpResendFrames) > 0:
-                for i in tmpResendFrames:   
-                    frame =  encodeData(str(bin(i)[2:]).zfill(2)+self.data.getFrameBySeqNo(seqNo=i, windowSize=self.N))
-                    self.ackStatus[i] = 1
-                    self.sock.sendall(str.encode(frame))
-                    self.startTimer(i)
-                    sleep(0.1)
+            while not self.resendFramesSeqNo.empty():
+                seqNo = self.resendFramesSeqNo.get()
+                if self.ackStatus[seqNo] != 1:
+                    continue
+                x = self.getFrameBySeqNo(seqNo)
+                if x == "":
+                    continue
+                frame =  encodeData(str(bin(seqNo)[2:]).zfill(2)+x)
+                self.sock.sendall(str.encode(frame))
+                self.startTimer(seqNo)
+                sleep(0.1)
 
-            for i in tmpResendFrames:
-                self.resendFramesSeqNo.remove(i)
 
 
             if (self.sn - self.sf) < self.N:
                 # Prepare fram e-- by taking the sn and the element of window
-                frame =  encodeData(str(bin(self.sn)[2:]).zfill(2)+self.data.getFrameBySeqNo(seqNo=self.sn, windowSize=self.N))
-                self.ackStatus[self.sn]= 1
+                x = self.getFrameBySeqNo(self.sn%self.N)
+                if x == "":
+                    continue
+                frame =  encodeData(str(bin(self.sn%self.N)[2:]).zfill(2)+x)
+                self.ackStatus[self.sn%self.N]= 1
                 # Send frame
                 self.sock.sendall(str.encode(frame))
+                if len(frame) != 14:
+                    print(f"Frame {frame} sn {self.sn} frame {self.getFrameBySeqNo(self.sn%self.N)}")
                 # Start timer
-                self.startTimer(self.sn)
-                # Increase Sn
-                self.increaseSn()
+                self.startTimer(self.sn%self.N)
+                self.sn += 1
 
             
             # update sf if acknowledge received
-            tmp = False
-            while self.ackStatus[self.sf] == 2:
-                self.ackStatus[self.sf] = 0
-                self.increaseSf()
-                self.data.dequeue()
-                tmp = True
+            while self.ackStatus[self.sf%self.N] == 2:
+                self.ackStatus[self.sf%self.N] = 0
+                self.sf += 1
+                            
+            if self.sf%self.N==0:
+                while self.ackStatus[self.sf%self.N] == 2:
+                    self.ackStatus[self.sf%self.N] = 0
+                    self.sf += 1
 
-            if tmp:
-                while self.ackStatus[self.sf] == 2:
-                    self.ackStatus[self.sf] = 0
-                    self.increaseSf()
-                    self.data.dequeue()
-            
-            sleep(1)
+            sleep(0.1)
 
     def recvAck(self):
         while True:
@@ -118,13 +124,14 @@ class Sender:
             data = self.sock.recv(1024)
             data = data.decode()
             # If ack is valid 
+            # print("Raw ack ", data)
             decodedData = decodeData(data)
             if decodedData[0]:
-                print("Received ack: ", decodedData[1])
+                # print("Received ack: ", decodedData[1])
                 seqNo = int(decodedData[1][1:], 2)
                 if decodedData[1][0] == '1':
                     # ACK
-                    if self.sf <= seqNo <= self.sn:
+                    if self.sf%self.N <= seqNo <= self.sn%self.N:
                         if self.timers[seqNo]:
                             self.timers[seqNo].cancel()
                             self.timers[seqNo] = None
@@ -133,23 +140,13 @@ class Sender:
                         # self.increaseSf()
                 else:
                     # NAK
-                    if self.sf <= seqNo <= self.sn:
-                        self.resendFramesSeqNo.add(seqNo)
+                    if self.sf%self.N <= seqNo <= self.sn%self.N:
+                        self.resendFramesSeqNo.put(seqNo)
 
-            print("sf: ", self.sf, "sn: ", self.sn)
+            # print("sf: ", self.sf, "sn: ", self.sn)
+            # print("".join(str(x) for x in self.ackStatus))
             # Unblock event
             self.sendThreadEvent.set()
-
-
-    def increaseSn(self):
-        self.sn += 1
-        if self.sn > self.snmax:
-            self.sn = 0
-
-    def increaseSf(self):
-        self.sf += 1
-        if self.sf > self.snmax:
-            self.sf = 0
 
     def startTimer(self, seqNo):
         if self.timers[seqNo]:
@@ -158,20 +155,27 @@ class Sender:
         self.timers[seqNo].start()
 
     def resendFrame(self, seqNo):
-        self.resendFramesSeqNo.add(seqNo)
-        self.sendThreadEvent.set()
+        self.resendFramesSeqNo.put(seqNo)
+        # self.sendThreadEvent.set()
 
 
     def pushData(self, data):
         frames = buildFrames(data, frameSize=8)
         for i in frames:
-            self.data.enqueue(i)
+            self.data.append(i)
 
+    def getFrameBySeqNo(self, seqNo):
+        for (i,v) in enumerate(self.data):
+            if i<self.sf :
+                continue
+            if i%self.N == seqNo:
+                return v
+        print("seqNo: ", seqNo, "sf: ", self.sf, "sn: ", self.sn)
+        return ""
 
 
 sender = Sender('127.0.0.1', 8081, 4)
 
 sender.pushData("0110100001100101011011010110110001101111011101010111100101110011")
 # 01101000   01100101  01101101 01101100 01101111 01100111 01110101 01111001 01110011 
-                 
 sender.startProcess()

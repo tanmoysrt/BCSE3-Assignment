@@ -1,3 +1,4 @@
+from audioop import tomono
 from cmath import sqrt
 from queue import Queue
 import socket
@@ -27,10 +28,6 @@ class Receiver:
         self.ackThreadNotification.clear()
         self.N = N
 
-        self.receivedStatus = [False]*self.N
-        self.dataWindow = ["0"]*self.N
-
-
         # Its to send nak and ack from sendAck thread
         self.ackSeqNos = Queue()
         # ACK -> (1, data)
@@ -39,7 +36,10 @@ class Receiver:
         self.data = []
         self.rn = 0
         tmp = int(sqrt(N).real)
-        self.rnmax = int('1'*tmp, 2)
+        self.rnmax = 2**tmp-1
+
+        self.receivedStatus = [False]*self.N
+        self.dataWindow = ["0"]*self.N
 
     def startProcess(self):
         self.sendACKThread = threading.Thread(target=self.sendACK)
@@ -67,13 +67,11 @@ class Receiver:
                     self.receivedStatus[seqNo] = True
                     self.dataWindow[seqNo] = frame
                     self.ackSeqNos.put((1, seqNo))
-                else:
-                    self.ackSeqNos.put((0, seqNo))
                 # Rebuild frame and slide window if required
 
                 #  Check from current rn to rnmax
                 for i in range(0, self.rnmax+1):
-                    if i < self.rnmax:
+                    if i < self.rn:
                         continue
                     if self.receivedStatus[i]:
                         self.data.append(self.dataWindow[i])
@@ -107,6 +105,7 @@ class Receiver:
                 print("ACK sent | Seq No ", ackData[1])
             self.sock.sendall(data)
             sleep(0.02)
+            self.printData()
 
     def increaseRn(self):
         self.rn += 1
