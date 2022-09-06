@@ -26,8 +26,8 @@ class Receiver:
         self.sock.connect((self.host, self.port))
         self.N = N
         self.rn = 0
-        tmp = int(sqrt(N).real)
-        self.rnmax = 2**tmp-1
+        # tmp = int(sqrt(N).real)
+        self.rnmax = 2**(N-1)
         
         self.data = []
         self.buffer = ["0"]*self.N

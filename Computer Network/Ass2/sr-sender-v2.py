@@ -31,14 +31,14 @@ class Sender:
         self.sf = 0
 
 
-        tmp = int(sqrt(N).real)
-        self.sw = 2**tmp-1
+        # tmp = int(sqrt(N).real)
+        self.sw = 2**(N-1)
         self.N = N
 
         self.oldFramesData = {}
 
         # Window frame status
-        self.timers = [None]*(self.sw+1)
+        self.timers = [None]*(N)
 
         # Configure the receiver
         receiver_ip = input("Enter receiver ip: ")

@@ -110,7 +110,7 @@ class Sender:
                     self.increaseSf()
                     self.data.dequeue()
             
-            sleep(1)
+            sleep()
 
     def recvAck(self):
         while True:
