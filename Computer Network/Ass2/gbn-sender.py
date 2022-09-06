@@ -60,6 +60,7 @@ class Sender:
                     break
                 frame =  encodeData(str(bin(self.sn)[2:]).zfill(2)+self.data[index])
                 # Send frame
+                print("[SEND] new frame ", frame, " with sn ", self.sn)
                 self.sock.sendall(str.encode(frame))
                 # Wait before sending next frame
                 sleep(0.05)
@@ -68,7 +69,7 @@ class Sender:
             self.ackReceivedEvent.clear()
             isNotified = self.ackReceivedEvent.wait(timeout=self.timeout)
             if not isNotified:
-                print("Resending frames")
+                print("[RESEND] resending frame ", frame, " with sn ", self.sn)
             # If timeout, resend the frame -- run the loop again
             
 
@@ -86,7 +87,11 @@ class Sender:
                     self.increaseSn()
                     self.frameIndex += 1
                     self.ackReceivedEvent.set()
-
+                    print("[ACK] ack received with sn ", seqNo)
+                else:
+                    print("[ACK] ack discarded as rn not macthed")
+            else:
+                print("[DISCARD] discarding ACK due to error")
 
 
     def increaseSn(self):

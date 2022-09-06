@@ -51,6 +51,7 @@ class Sender:
                 break
             # Prepare fram e-- by taking the sn and the element of window
             frame = encodeData(str(bin(self.sn)[2:]).zfill(2)+self.data[self.frameIndex])
+            print("[SEND] new frame ", frame, " with sn ", self.sn)
             # Increase seq no
             self.increaseSn()
             # Icrease frame index
@@ -61,7 +62,7 @@ class Sender:
             self.ackReceivedEvent.clear()
             isNotified = self.ackReceivedEvent.wait(timeout=self.timeout)
             if not isNotified:
-                print("Resending frame")
+                print("[RESEND] resending frame ", frame, " with sn ", self.sn)
                 self.frameIndex -= 1
                 self.decreaseSn()
 
@@ -83,9 +84,13 @@ class Sender:
                     self.sn = seqNo
                     # Set frame index to previous frame index
                     self.frameIndex = max(self.frameIndex-1, 0)
-
+                    print("[ACK] ack received with sn ", seqNo)
+                else:
+                    print("[ACK] ack discarded as rn not macthed")
                 # Emit ackreceived event
                 self.ackReceivedEvent.set()
+            else:
+                print("[DISCARD] discarding ACK due to error")
 
 
     def increaseSn(self):

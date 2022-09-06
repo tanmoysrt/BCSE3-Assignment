@@ -11,7 +11,7 @@ class Channel(SocketServer):
 
     @staticmethod
     def modifyData(data):
-        return data
+        # return data
         # return data
         if data in ["disconnect:"]:
             return data

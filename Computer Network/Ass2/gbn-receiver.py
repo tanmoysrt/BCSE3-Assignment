@@ -46,14 +46,19 @@ class Receiver:
                     self.data.append(frame)
                     self.frameReceived.set()
                     self.printData()
+                    print("[ACCEPT] Frame received ")
                 # If seq no != rn, discard and send ack fagain
                 else:
+                    print("[DISCARD] seqNo not matched to rn")
                     self.frameReceived.set()
+            else:
+                print("[DISCARD] frame due to error")
 
     def sendACK(self):
         while True:
             # Wait for frame received event
             self.frameReceived.wait()
+            print("[ACK] Sending ACK for frame ", self.rn)
             # Send ack for the frame
             self.sock.sendall(str.encode(generateACK(self.rn, with_parity=True)))
             # Clear frame received event

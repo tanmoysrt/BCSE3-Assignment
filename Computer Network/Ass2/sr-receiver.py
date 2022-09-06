@@ -58,6 +58,7 @@ class Receiver:
             decodedData = decodeData(data)
             # Check if valid
             if decodedData[0]:
+                print("[ACCEPTED] Valid frame")
                 # Extract frame and seq no
                 data = decodedData[1]
                 seqNo = int(data[:2], 2)
@@ -68,7 +69,7 @@ class Receiver:
                     self.nakSent = True
                 
                 # If seq no == rn, save data and send ack for next frame
-                if 0 <= seqNo <= self.rnmax and not self.marked[seqNo]:
+                if self.rn <= seqNo <= self.rnmax and not self.marked[seqNo]:
                     # Store frame
                     self.buffer[seqNo] = frame
                     # Mark Received
@@ -83,22 +84,28 @@ class Receiver:
                         self.sendACK()
                         self.ackNeeded = False
                         self.nakSent = False
+            else:
+                print("[DISCARD] Discarding frame due to error")
                         
             self.printData()
 
     def sendACK(self):
+        print("[ACK] Sending ACK for ", self.rn)
         data = str.encode(generateACK(self.rn, with_parity=True, for_selective_repeat=True, isNak=False))
         self.sock.sendall(data)
         sleep(0.1)
 
     def sendNAK(self):
+        print("[NAK] Sending NAK for ", self.rn)
         data = str.encode(generateACK(self.rn, with_parity=True, for_selective_repeat=True, isNak=True))
         self.sock.sendall(data)
         sleep(0.1)
 
     def printData(self):
-        print("Data : ", self.data)
-        print("Buffer : ", self.buffer)
+        print("Data ", end="")
+        for frame in self.data:
+            print(frame, end="", flush=True)
+        print()
 
 receiver = Receiver("127.0.0.1", 8081)
 receiver.startProcess()

@@ -27,12 +27,13 @@ class Sender:
         self.sock.connect((self.host, self.port))
 
         self.data = Queue()
-        self.sf = 0
         self.sn = 0
+        self.sf = 0
 
 
         tmp = int(sqrt(N).real)
         self.sw = 2**tmp-1
+        self.N = N
 
         self.oldFramesData = {}
 
@@ -41,7 +42,7 @@ class Sender:
 
         # Configure the receiver
         receiver_ip = input("Enter receiver ip: ")
-        if len(receiver_ip.strip()) == 0:
+        if receiver_ip == None or  len(receiver_ip.strip()) == 0:
             receiver_ip = "127.0.0.1"
         receiver_port = input("Enter receiver port: ")
         self.sock.sendall(str.encode(f'connect:{receiver_ip}:{receiver_port}'))
@@ -50,10 +51,8 @@ class Sender:
     def startProcess(self):
         self.senderThread = threading.Thread(target=self.send)
         self.receiverACKThread = threading.Thread(target=self.recvAck)
-        self.resendFrameThread = threading.Thread(target=self.resendFrame)
         self.receiverACKThread.start()
         self.senderThread.start()
-        self.resendFrameThread.start()
 
     def send(self):
         while True:
@@ -69,13 +68,14 @@ class Sender:
                 # Store frame
                 self.oldFramesData[self.sn] = frame
                 # Send frame
+                print("Sending frame: ", frame)
                 self.sock.sendall(str.encode(frame))
-                # Increment sn
-                self.sn = (self.sn+1)%self.sw
                 # Start timer
                 self.startTimer(self.sn)
+                # Increment sn
+                self.sn = (self.sn+1)%self.N
 
-            sleep(0.1)
+            sleep(0.2)
 
     def recvAck(self):
         while True:
@@ -86,23 +86,26 @@ class Sender:
             decodedData = decodeData(data)
             if decodedData[0]:
                 # print("Received ack: ", decodedData[1])
-                seqNo = int(decodedData[1][1:], 2)
+                seqNo = (int(decodedData[1][1:], 2)-1)%self.N
                 if decodedData[1][0] == '1':
+                    print("[ACK] for frame ", seqNo)
                     # ACK
-                    if self.sf < seqNo <= self.sn:
-                        while self.sf < seqNo:
+                    if seqNo > self.sf and seqNo <= self.sn:
+                        while self.sf <= seqNo:
                             # Start timer
                             if self.timers[seqNo]:
                                 self.timers[seqNo].cancel()
                                 self.timers[seqNo] = None
-                            self.sf = (self.sf+1)%(self.sw+1)
+                            self.sf = (self.sf+1)%self.N
                 else:
                     # NAK
-                    if self.sf < seqNo <= self.sn:
+                    print("[NAK] for frame ", seqNo)
+                    if seqNo > self.sf and seqNo < self.sn:
                         self.resendFrameAndSetTimer(seqNo)
+            else:
+                print("[DISCARD] acknolwedgement de to error")
+            # sleep(0.2)
 
-    def resendFrame(self):
-        pass
 
     def startTimer(self, seqNo):
         if self.timers[seqNo]:
@@ -111,16 +114,22 @@ class Sender:
         self.timers[seqNo].start()
 
     def resendFrame(self, seqNo):
+        if seqNo not in self.oldFramesData:
+            return
         frame =  self.oldFramesData[seqNo]
-        self.sock.sendall(frame)
-        sleep(0.1)
+        print("Resending frame: ", frame)
+        self.sock.sendall(str.encode(frame))
+        sleep(0.2)
 
     def resendFrameAndSetTimer(self, seqNo):
+        if seqNo not in self.oldFramesData:
+            return
         frame =  self.oldFramesData[seqNo] # It wil have encoded frame
         if len(frame) == 14:
-            self.sock.sendall(frame)
+            self.sock.sendall(str.encode(frame))
+            print("Resending frame: ", frame)
             self.startTimer(seqNo)
-            sleep(0.1)
+            sleep(0.2)
 
 
     def pushData(self, data):
@@ -134,6 +143,6 @@ class Sender:
 sender = Sender('127.0.0.1', 8081, 4)
 
 sender.pushData("011010000110010101101101011011000110111101110101011110010111001101110011")
+
 # 01101000   01100101  01101101 01101100 01101111 01100111 01110101 01111001 01110011 01110011 
-# 01101000   01100101  01101101
 sender.startProcess()
