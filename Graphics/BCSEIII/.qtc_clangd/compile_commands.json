@@ -8,7 +8,6 @@
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
-        "-g",
         "-std=gnu++1z",
         "-D_REENTRANT",
         "-Wall",
@@ -18,17 +17,17 @@
         "-m64",
         "--target=x86_64-linux-gnu",
         "-DQT_DEPRECATED_WARNINGS",
+        "-DQT_NO_DEBUG",
         "-DQT_WIDGETS_LIB",
         "-DQT_GUI_LIB",
         "-DQT_CORE_LIB",
-        "-DQT_QML_DEBUG",
         "-DQ_CREATOR_RUN",
         "-I",
         "/home/tanmoy/Qt/Tools/QtCreator/share/qtcreator/cplusplus/wrappedQtHeaders",
         "-I",
         "/home/tanmoy/Qt/Tools/QtCreator/share/qtcreator/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/home/tanmoy/Downloads/BCSEIII",
+        "/home/tanmoy/Desktop/Lab/Graphics/BCSEIII",
         "-I",
         "/home/tanmoy/Qt/6.3.1/gcc_64/include",
         "-I",
@@ -60,10 +59,10 @@
         "-ferror-limit=1000",
         "-x",
         "c++",
-        "/home/tanmoy/Downloads/BCSEIII/main.cpp"
+        "/home/tanmoy/Desktop/Lab/Graphics/BCSEIII/main.cpp"
     ],
-    "directory": "/home/tanmoy/Downloads/BCSEIII/.qtc_clangd",
-    "file": "/home/tanmoy/Downloads/BCSEIII/main.cpp"
+    "directory": "/home/tanmoy/Desktop/Lab/Graphics/BCSEIII/.qtc_clangd",
+    "file": "/home/tanmoy/Desktop/Lab/Graphics/BCSEIII/main.cpp"
 },
 {
     "arguments": [
@@ -74,7 +73,6 @@
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
-        "-g",
         "-std=gnu++1z",
         "-D_REENTRANT",
         "-Wall",
@@ -84,17 +82,17 @@
         "-m64",
         "--target=x86_64-linux-gnu",
         "-DQT_DEPRECATED_WARNINGS",
+        "-DQT_NO_DEBUG",
         "-DQT_WIDGETS_LIB",
         "-DQT_GUI_LIB",
         "-DQT_CORE_LIB",
-        "-DQT_QML_DEBUG",
         "-DQ_CREATOR_RUN",
         "-I",
         "/home/tanmoy/Qt/Tools/QtCreator/share/qtcreator/cplusplus/wrappedQtHeaders",
         "-I",
         "/home/tanmoy/Qt/Tools/QtCreator/share/qtcreator/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/home/tanmoy/Downloads/BCSEIII",
+        "/home/tanmoy/Desktop/Lab/Graphics/BCSEIII",
         "-I",
         "/home/tanmoy/Qt/6.3.1/gcc_64/include",
         "-I",
@@ -126,10 +124,10 @@
         "-ferror-limit=1000",
         "-x",
         "c++",
-        "/home/tanmoy/Downloads/BCSEIII/mainwindow.cpp"
+        "/home/tanmoy/Desktop/Lab/Graphics/BCSEIII/mainwindow.cpp"
     ],
-    "directory": "/home/tanmoy/Downloads/BCSEIII/.qtc_clangd",
-    "file": "/home/tanmoy/Downloads/BCSEIII/mainwindow.cpp"
+    "directory": "/home/tanmoy/Desktop/Lab/Graphics/BCSEIII/.qtc_clangd",
+    "file": "/home/tanmoy/Desktop/Lab/Graphics/BCSEIII/mainwindow.cpp"
 },
 {
     "arguments": [
@@ -140,7 +138,6 @@
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
-        "-g",
         "-std=gnu++1z",
         "-D_REENTRANT",
         "-Wall",
@@ -150,17 +147,17 @@
         "-m64",
         "--target=x86_64-linux-gnu",
         "-DQT_DEPRECATED_WARNINGS",
+        "-DQT_NO_DEBUG",
         "-DQT_WIDGETS_LIB",
         "-DQT_GUI_LIB",
         "-DQT_CORE_LIB",
-        "-DQT_QML_DEBUG",
         "-DQ_CREATOR_RUN",
         "-I",
         "/home/tanmoy/Qt/Tools/QtCreator/share/qtcreator/cplusplus/wrappedQtHeaders",
         "-I",
         "/home/tanmoy/Qt/Tools/QtCreator/share/qtcreator/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/home/tanmoy/Downloads/BCSEIII",
+        "/home/tanmoy/Desktop/Lab/Graphics/BCSEIII",
         "-I",
         "/home/tanmoy/Qt/6.3.1/gcc_64/include",
         "-I",
@@ -192,10 +189,10 @@
         "-ferror-limit=1000",
         "-x",
         "c++",
-        "/home/tanmoy/Downloads/BCSEIII/my_label.cpp"
+        "/home/tanmoy/Desktop/Lab/Graphics/BCSEIII/my_label.cpp"
     ],
-    "directory": "/home/tanmoy/Downloads/BCSEIII/.qtc_clangd",
-    "file": "/home/tanmoy/Downloads/BCSEIII/my_label.cpp"
+    "directory": "/home/tanmoy/Desktop/Lab/Graphics/BCSEIII/.qtc_clangd",
+    "file": "/home/tanmoy/Desktop/Lab/Graphics/BCSEIII/my_label.cpp"
 },
 {
     "arguments": [
@@ -206,7 +203,6 @@
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
-        "-g",
         "-std=gnu++1z",
         "-D_REENTRANT",
         "-Wall",
@@ -216,17 +212,17 @@
         "-m64",
         "--target=x86_64-linux-gnu",
         "-DQT_DEPRECATED_WARNINGS",
+        "-DQT_NO_DEBUG",
         "-DQT_WIDGETS_LIB",
         "-DQT_GUI_LIB",
         "-DQT_CORE_LIB",
-        "-DQT_QML_DEBUG",
         "-DQ_CREATOR_RUN",
         "-I",
         "/home/tanmoy/Qt/Tools/QtCreator/share/qtcreator/cplusplus/wrappedQtHeaders",
         "-I",
         "/home/tanmoy/Qt/Tools/QtCreator/share/qtcreator/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/home/tanmoy/Downloads/BCSEIII",
+        "/home/tanmoy/Desktop/Lab/Graphics/BCSEIII",
         "-I",
         "/home/tanmoy/Qt/6.3.1/gcc_64/include",
         "-I",
@@ -258,10 +254,10 @@
         "-ferror-limit=1000",
         "-x",
         "c++-header",
-        "/home/tanmoy/Downloads/BCSEIII/mainwindow.h"
+        "/home/tanmoy/Desktop/Lab/Graphics/BCSEIII/mainwindow.h"
     ],
-    "directory": "/home/tanmoy/Downloads/BCSEIII/.qtc_clangd",
-    "file": "/home/tanmoy/Downloads/BCSEIII/mainwindow.h"
+    "directory": "/home/tanmoy/Desktop/Lab/Graphics/BCSEIII/.qtc_clangd",
+    "file": "/home/tanmoy/Desktop/Lab/Graphics/BCSEIII/mainwindow.h"
 },
 {
     "arguments": [
@@ -272,7 +268,6 @@
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
-        "-g",
         "-std=gnu++1z",
         "-D_REENTRANT",
         "-Wall",
@@ -282,17 +277,17 @@
         "-m64",
         "--target=x86_64-linux-gnu",
         "-DQT_DEPRECATED_WARNINGS",
+        "-DQT_NO_DEBUG",
         "-DQT_WIDGETS_LIB",
         "-DQT_GUI_LIB",
         "-DQT_CORE_LIB",
-        "-DQT_QML_DEBUG",
         "-DQ_CREATOR_RUN",
         "-I",
         "/home/tanmoy/Qt/Tools/QtCreator/share/qtcreator/cplusplus/wrappedQtHeaders",
         "-I",
         "/home/tanmoy/Qt/Tools/QtCreator/share/qtcreator/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/home/tanmoy/Downloads/BCSEIII",
+        "/home/tanmoy/Desktop/Lab/Graphics/BCSEIII",
         "-I",
         "/home/tanmoy/Qt/6.3.1/gcc_64/include",
         "-I",
@@ -324,10 +319,10 @@
         "-ferror-limit=1000",
         "-x",
         "c++-header",
-        "/home/tanmoy/Downloads/BCSEIII/my_label.h"
+        "/home/tanmoy/Desktop/Lab/Graphics/BCSEIII/my_label.h"
     ],
-    "directory": "/home/tanmoy/Downloads/BCSEIII/.qtc_clangd",
-    "file": "/home/tanmoy/Downloads/BCSEIII/my_label.h"
+    "directory": "/home/tanmoy/Desktop/Lab/Graphics/BCSEIII/.qtc_clangd",
+    "file": "/home/tanmoy/Desktop/Lab/Graphics/BCSEIII/my_label.h"
 },
 {
     "arguments": [
@@ -338,7 +333,6 @@
         "-nostdinc",
         "-nostdinc++",
         "-pipe",
-        "-g",
         "-std=gnu++1z",
         "-D_REENTRANT",
         "-Wall",
@@ -348,17 +342,17 @@
         "-m64",
         "--target=x86_64-linux-gnu",
         "-DQT_DEPRECATED_WARNINGS",
+        "-DQT_NO_DEBUG",
         "-DQT_WIDGETS_LIB",
         "-DQT_GUI_LIB",
         "-DQT_CORE_LIB",
-        "-DQT_QML_DEBUG",
         "-DQ_CREATOR_RUN",
         "-I",
         "/home/tanmoy/Qt/Tools/QtCreator/share/qtcreator/cplusplus/wrappedQtHeaders",
         "-I",
         "/home/tanmoy/Qt/Tools/QtCreator/share/qtcreator/cplusplus/wrappedQtHeaders/QtCore",
         "-I",
-        "/home/tanmoy/Downloads/BCSEIII",
+        "/home/tanmoy/Desktop/Lab/Graphics/BCSEIII",
         "-I",
         "/home/tanmoy/Qt/6.3.1/gcc_64/include",
         "-I",
@@ -390,9 +384,9 @@
         "-ferror-limit=1000",
         "-x",
         "c++-header",
-        "/home/tanmoy/Downloads/BCSEIII/ui_mainwindow.h"
+        "/home/tanmoy/Desktop/Lab/Graphics/BCSEIII/ui_mainwindow.h"
     ],
-    "directory": "/home/tanmoy/Downloads/BCSEIII/.qtc_clangd",
-    "file": "/home/tanmoy/Downloads/BCSEIII/ui_mainwindow.h"
+    "directory": "/home/tanmoy/Desktop/Lab/Graphics/BCSEIII/.qtc_clangd",
+    "file": "/home/tanmoy/Desktop/Lab/Graphics/BCSEIII/ui_mainwindow.h"
 }
 ]

@@ -1,0 +1,14 @@
+{
+    "files.associations": {
+        "stat.h": "c",
+        "unistd.h": "c",
+        "wait.h": "c",
+        "sstream": "c",
+        "array": "c",
+        "string": "c",
+        "string_view": "c",
+        "semaphore.h": "c",
+        "fcntl.h": "c",
+        "algorithm": "c"
+    }
+}

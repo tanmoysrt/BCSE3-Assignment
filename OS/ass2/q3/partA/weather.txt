@@ -1,0 +1,9 @@
+Temp : 56C
+Wind : 10.0 km/h
+Humidity : 100%
+Pressure : 1010.0 mb
+Visibility : 10.0 km
+Cloud Cover : 100%
+Precipitation : 0.0 mm
+Weather : Overcast
+Weather Description : overcast clouds

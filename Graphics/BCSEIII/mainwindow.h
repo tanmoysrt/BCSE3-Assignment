@@ -36,12 +36,21 @@ private slots:
 
     void on_grid_size_valueChanged(int arg1);
 
+    void on_set_mid_point_circle_clicked();
+
+    void delay(int);
+
+    void on_set_another_point_circle_clicked();
+
+    void on_set_center_point_ellipse_clicked();
 
 private:
     Ui::MainWindow *ui;
-    QPoint p1,p2;
-    void point(int,int,int,int,int);
+    QPoint p1,p2, cp1, cp2, centerPointAxis, cpe1;
+    void point(int,int,int,int,int, int);
+//    void swap(int )
     int roundNo(float n);
+    int nearestPoint(int actualPoint, int gridSize);
 };
 
 #endif // MAINWINDOW_H

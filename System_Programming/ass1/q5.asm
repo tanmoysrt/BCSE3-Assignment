@@ -1,5 +1,5 @@
 .model small
-.stack 300h
+.stack 100h
 .data
       msg1 db "enter a character [press enter to exit] : $"
       msg2 db "program terminated $"
@@ -33,20 +33,20 @@ nextline macro
     
     pop dx
     pop ax
-endm
+endm 
 
 main proc
  mov ax, @data
  mov ds, ax
  
- label:
+ labelZ:
  print msg1
  mov ah, 01h
  int 21h
  nextline
  cmp al, 13
  nop     
- jne label     
+ jne labelZ     
  
  nextline
  print msg2
