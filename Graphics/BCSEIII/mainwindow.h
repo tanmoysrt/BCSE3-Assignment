@@ -19,6 +19,7 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+
 private slots:
     void on_show_axes_clicked();
 
@@ -44,13 +45,29 @@ private slots:
 
     void on_set_center_point_ellipse_clicked();
 
+    void on_boundary_fill_btn_clicked();
+    QColor get_color_from_pixel(QPoint p);
+
+    void on_boundary_fill_8_connected_btn_clicked();
+
+    void on_flood_fill_btn_clicked();
+
+    void on_flood_fill_btn_8_connected_clicked();
+
 private:
     Ui::MainWindow *ui;
     QPoint p1,p2, cp1, cp2, centerPointAxis, cpe1;
+    int noOfPolygonPoints;
     void point(int,int,int,int,int, int);
+    void point(int,int,QRgb);
+    QPoint lastP;
 //    void swap(int )
     int roundNo(float n);
     int nearestPoint(int actualPoint, int gridSize);
+    void on_boundary_fill_btn_clicked_recur(QPoint p);
+    void on_boundary_fill_8_connected_btn_clicked_recur(QPoint p);
+    void on_flood_fill_util(QPoint p);
+    void on_flood_fill_8_connected_util(QPoint p);
 };
 
 #endif // MAINWINDOW_H

@@ -8,22 +8,16 @@
 #include <sys/wait.h>
 #include <errno.h>
 #include <fcntl.h>
+
 #define BUFFER_SIZE 200
-#define FIFO_NAME "telephone_fifo"
+#define READ_FIFO_NAME "telephone_fifo_line2"
+#define WRITE_FIFO_NAME "telephone_fifo_line1"
+
 
 int main()
 {
-
-    int pid = fork();
-
-    if (pid == -1)
-    {
-        printf("Fork creation failed");
-        return 1;
-    }
-
     // Create fifo
-    if (mkfifo(FIFO_NAME, 0777) == -1)
+    if (mkfifo(READ_FIFO_NAME, 0777) == -1 || mkfifo(WRITE_FIFO_NAME, 0777) == -1)
     {
         if (errno != EEXIST)
         {
@@ -32,34 +26,39 @@ int main()
         }
     }
 
-    int fdRD = open(FIFO_NAME, O_RDONLY|O_NONBLOCK);
-    int fdWR = open(FIFO_NAME, O_WRONLY|O_NONBLOCK);
+    int fdReadFifo = open(READ_FIFO_NAME, O_RDONLY|O_NONBLOCK);
+    int fdWriteFifo = open(WRITE_FIFO_NAME, O_WRONLY|O_NONBLOCK);
+    int isWrite=1;
     char data[BUFFER_SIZE];
 
     while (1)
     {
-        printf("Enter message: ");
-        scanf("%s", data);
-        // fgets(data, BUFFER_SIZE, stdin);
-        write(fdWR, data, BUFFER_SIZE);
-
-        if (read(fdRD, data, BUFFER_SIZE) > 0)
-        {
-            if (strcmp(data, "end\n") == 0)
+        if(isWrite == 1){
+            printf("Enter message: ");
+            fgets(data, BUFFER_SIZE, stdin);
+            data[strcspn(data, "\n")] = 0;
+            fflush(stdin);
+            write(fdWriteFifo, data, BUFFER_SIZE);
+            isWrite = 0;
+        }else{
+            if (read(fdReadFifo, data, BUFFER_SIZE) > 0)
             {
-                printf("\nReceiver: The caller has hanged up\n");
-                break;
-            }
-            else
-            {
-                printf("Received: %s", data);
+                if (strcmp(data, "end\n") == 0)
+                {
+                    printf("\nReceiver: The caller has hanged up\n");
+                    break;
+                }
+                else
+                {
+                    printf("Received: %s", data);
+                    isWrite = 1;
+                }
             }
         }
-
-
     }
 
 
-    close(fdRD);
+    close(fdWriteFifo);
+    close(fdReadFifo);
     return 0;
 }

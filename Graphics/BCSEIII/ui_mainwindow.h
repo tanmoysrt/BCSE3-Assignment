@@ -72,6 +72,12 @@ public:
     QSpinBox *ellipseA;
     QSpinBox *ellipseB;
     QPushButton *set_center_point_ellipse;
+    QFrame *line_2;
+    QPushButton *boundary_fill_btn;
+    QPushButton *flood_fill_btn;
+    QLabel *label_4;
+    QPushButton *boundary_fill_8_connected_btn;
+    QPushButton *flood_fill_btn_8_connected;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -80,7 +86,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(999, 736);
+        MainWindow->resize(1382, 736);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         frame = new my_label(centralWidget);
@@ -178,7 +184,7 @@ public:
         line_4->setFrameShadow(QFrame::Sunken);
         line_6 = new QFrame(centralWidget);
         line_6->setObjectName(QString::fromUtf8("line_6"));
-        line_6->setGeometry(QRect(700, 660, 301, 16));
+        line_6->setGeometry(QRect(700, 660, 681, 16));
         line_6->setFrameShape(QFrame::HLine);
         line_6->setFrameShadow(QFrame::Sunken);
         groupBox = new QGroupBox(centralWidget);
@@ -250,10 +256,30 @@ public:
         set_center_point_ellipse = new QPushButton(centralWidget);
         set_center_point_ellipse->setObjectName(QString::fromUtf8("set_center_point_ellipse"));
         set_center_point_ellipse->setGeometry(QRect(720, 370, 131, 31));
+        line_2 = new QFrame(centralWidget);
+        line_2->setObjectName(QString::fromUtf8("line_2"));
+        line_2->setGeometry(QRect(993, 0, 20, 661));
+        line_2->setFrameShape(QFrame::VLine);
+        line_2->setFrameShadow(QFrame::Sunken);
+        boundary_fill_btn = new QPushButton(centralWidget);
+        boundary_fill_btn->setObjectName(QString::fromUtf8("boundary_fill_btn"));
+        boundary_fill_btn->setGeometry(QRect(1020, 40, 341, 31));
+        flood_fill_btn = new QPushButton(centralWidget);
+        flood_fill_btn->setObjectName(QString::fromUtf8("flood_fill_btn"));
+        flood_fill_btn->setGeometry(QRect(1020, 140, 341, 31));
+        label_4 = new QLabel(centralWidget);
+        label_4->setObjectName(QString::fromUtf8("label_4"));
+        label_4->setGeometry(QRect(1140, 10, 111, 17));
+        boundary_fill_8_connected_btn = new QPushButton(centralWidget);
+        boundary_fill_8_connected_btn->setObjectName(QString::fromUtf8("boundary_fill_8_connected_btn"));
+        boundary_fill_8_connected_btn->setGeometry(QRect(1020, 90, 341, 31));
+        flood_fill_btn_8_connected = new QPushButton(centralWidget);
+        flood_fill_btn_8_connected->setObjectName(QString::fromUtf8("flood_fill_btn_8_connected"));
+        flood_fill_btn_8_connected->setGeometry(QRect(1020, 190, 341, 31));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 999, 22));
+        menuBar->setGeometry(QRect(0, 0, 1382, 22));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
@@ -297,6 +323,11 @@ public:
         set_another_point_circle->setText(QCoreApplication::translate("MainWindow", "Set another point", nullptr));
         draw_ellipse->setText(QCoreApplication::translate("MainWindow", "Draw Ellipse", nullptr));
         set_center_point_ellipse->setText(QCoreApplication::translate("MainWindow", "Set center point", nullptr));
+        boundary_fill_btn->setText(QCoreApplication::translate("MainWindow", "Boundary Fill 4 Connected", nullptr));
+        flood_fill_btn->setText(QCoreApplication::translate("MainWindow", "Flood Fill 4 Connected", nullptr));
+        label_4->setText(QCoreApplication::translate("MainWindow", "Color Filling", nullptr));
+        boundary_fill_8_connected_btn->setText(QCoreApplication::translate("MainWindow", "Boundary Fill 8 Connected", nullptr));
+        flood_fill_btn_8_connected->setText(QCoreApplication::translate("MainWindow", "Flood Fill 8 Connected", nullptr));
     } // retranslateUi
 
 };

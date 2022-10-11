@@ -23,8 +23,7 @@ int getRandomNumber()
     return rand() % ((MAX_RANDOM_NUMBER + 1) - MIN_RANDOM_NUMBER) + MIN_RANDOM_NUMBER;
 }
 
-struct Buffer
-{
+struct Buffer{
     int data[BUFFER_MAX_ELEMENTS + 1];
     int readCur;  // read cursor
     int writeCur; // write cursor
@@ -33,11 +32,11 @@ struct Buffer
     sem_t *data_available_mutex;
 };
 
-struct ConsumerPIDs
-{
-    int *pids;
-    int count;
-};
+// struct ConsumerPIDs
+// {
+//     int *pids;
+//     int count;
+// };
 
 void initBuffer(struct Buffer *buffer)
 {
@@ -70,14 +69,14 @@ int getData(struct Buffer *buffer)
     return buffer->data[buffer->readCur];
 }
 
-void addConsumer(struct ConsumerPIDs *consumerPIDs, int pid)
-{
-    consumerPIDs->pids[consumerPIDs->count] = pid;
-    consumerPIDs->count = consumerPIDs->count + 1;
-}
+// void addConsumer(struct ConsumerPIDs *consumerPIDs, int pid)
+// {
+//     consumerPIDs->pids[consumerPIDs->count] = pid;
+//     consumerPIDs->count = consumerPIDs->count + 1;
+// }
 
 struct Buffer *buffer;
-struct ConsumerPIDs *consumerPIDs;
+// struct ConsumerPIDs *consumerPIDs;
 int *total;
 int *noOfProducersExited;
 
@@ -90,14 +89,14 @@ int main()
     buffer = mmap(NULL, sizeof *buffer, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
     total = mmap(NULL, sizeof *total, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
     noOfProducersExited = mmap(NULL, sizeof *total, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-    consumerPIDs = mmap(NULL, sizeof *consumerPIDs, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
+    // consumerPIDs = mmap(NULL, sizeof *consumerPIDs, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
 
     initBuffer(buffer);
 
     *total = 0;
     *noOfProducersExited = 0;
-    consumerPIDs->count = 0;
-    consumerPIDs->pids = (int *)malloc((noConsumers + 1) * sizeof(int));
+    // consumerPIDs->count = 0;
+    // consumerPIDs->pids = (int *)malloc((noConsumers + 1) * sizeof(int));
 
     // Get number of producers and consumers
     printf("Enter number of producers: ");
@@ -120,7 +119,6 @@ int main()
         id = fork();
         if (id == 0)
         {
-            addConsumer(consumerPIDs, getpid());
             // If buffer full wait
             if (buffer->count == BUFFER_MAX_ELEMENTS)
             {
@@ -180,7 +178,6 @@ int main()
             usleep(10000);
         }
         
-
 
         printf("Total %d\n", *total);
     }

@@ -14,6 +14,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow)
 {
+
+
     ui->setupUi(this);
 
     // Set background of axis
@@ -69,6 +71,29 @@ void MainWindow::point(int x,int y,int red=143,int green=211,int blue=0, int del
     ui->frame->setPixmap(QPixmap::fromImage(img));
     delay(delayms);
 }
+
+void MainWindow::point(int x, int y, QRgb rgb){
+    if(x < 0 || y < 0 || x>700 || y>700) return;
+    // On click light up the pixel
+    int j = ui->grid_size->value();
+    if(j == 1){
+        img.setPixel(x,y,rgb);
+        return;
+    }
+    int xnearest = (int)(x/j)*j;
+    int ynearest = (int)(y/j)*j;
+
+    // Fill with color
+    for(int i=xnearest+1; i<fmin(xnearest+j, img.height()); i++){
+        for(int z=ynearest+1; z<fmin(ynearest+j, img.height()); z++){
+            img.setPixel(i,z,rgb);
+        }
+    }
+    ui->frame->setPixmap(QPixmap::fromImage(img));
+}
+QColor MainWindow::get_color_from_pixel(QPoint p){
+    return img.pixelColor(*(new QPoint(p.x()+1, p.y()+1)));
+}
 void MainWindow::showMousePosition(QPoint &pos)
 {
     int gridSize = ui->grid_size->value();
@@ -82,7 +107,7 @@ void MainWindow::Mouse_Pressed()
     ui->mouse_pressed->setText(" X : "+QString::number(roundNo(((ui->frame->x-centerPointAxis.x()))/j))+", Y : "+QString::number(roundNo((centerPointAxis.y()-ui->frame->y)/j)));
     point(ui->frame->x,ui->frame->y, 69,205,52);
 
-
+    lastP = *(new QPoint(ui->frame->x, ui->frame->y));
 
     if(ui->move_axis_checkbox->isChecked()){
         int xnearest = int((ui->frame->x)/j)*j;
@@ -209,7 +234,7 @@ void MainWindow::on_Draw_clicked()
             int x = 0;
             int y = r*gridsize;
             int p = (3 - 2*r)*gridsize;
-            while(y > x) {
+            while(y >= x) {
                 point(x0 - x, y0 - y,124,255,0, 20);
                 point(x0 + x, y0 - y,124,255,0, 20);
                 point(x0 - x, y0 + y,124,255,0, 20);
@@ -229,18 +254,22 @@ void MainWindow::on_Draw_clicked()
         }
 
         if(ui->polarRadioCircle->isChecked()){
+           int x0 = xc/gridsize;
+           int y0 = yc/gridsize;
+           x0 = x0*gridsize + gridsize/2;
+           y0 = y0*gridsize + gridsize/2;
            for (int theta_degrees = 0; theta_degrees <= 45; theta_degrees++) {
                double theta_radians = M_PI * theta_degrees / 180;
                int xk = r * cos (theta_radians) * gridsize;
                int yk = r * sin (theta_radians) * gridsize;
-               point(xc + xk, yc + yk, 253, 143, 10, 20);
-               point(xc + xk, yc - yk, 253, 143, 10, 20);
-               point(xc - xk, yc + yk, 253, 143, 10, 20);
-               point(xc - xk, yc - yk, 253, 143, 10, 20);
-               point(xc + yk, yc + xk, 253, 143, 10, 20);
-               point(xc + yk, yc - xk, 253, 143, 10, 20);
-               point(xc - yk, yc + xk, 253, 143, 10, 20);
-               point(xc - yk, yc - xk, 253, 143, 10, 20);
+               point(x0 - xk, y0 - yk, 253, 143, 10, 20);
+               point(x0 + xk, y0 - yk, 253, 143, 10, 20);
+               point(x0 - xk, y0 + yk, 253, 143, 10, 20);
+               point(x0 + xk, y0 + yk, 253, 143, 10, 20);
+               point(x0 - yk, y0 - xk, 253, 143, 10, 20);
+               point(x0 + yk, y0 - xk, 253, 143, 10, 20);
+               point(x0 - yk, y0 + xk, 253, 143, 10, 20);
+               point(x0 + yk, y0 + xk, 253, 143, 10, 20);
            }
         }
     }
@@ -248,6 +277,16 @@ void MainWindow::on_Draw_clicked()
     if(ui->draw_ellipse->isChecked()){
         int xc = cpe1.x();
         int yc = cpe1.y();
+        float gridsize=ui->grid_size->value();
+
+        int x0 = xc/gridsize;
+        int y0 = yc/gridsize;
+        x0 = x0*gridsize + gridsize/2;
+        y0 = y0*gridsize + gridsize/2;
+
+        xc = x0;
+        yc = y0;
+
 
         int a = ui->ellipseA->value()*gridSize;
         int b = ui->ellipseB->value()*gridSize;
@@ -263,10 +302,10 @@ void MainWindow::on_Draw_clicked()
             int px = 0;
             int py = tworx2*yk;
 
-            point(xc + xk, yc + yk, 200, 14, 9, 0);
-            point(xc + xk, yc - yk, 200, 14, 9, 0);
-            point(xc - xk, yc + yk, 200, 14, 9, 0);
-            point(xc - xk, yc - yk, 200, 14, 9, 0);
+            point(xc + xk, yc + yk, 200, 14, 9, 20);
+            point(xc + xk, yc - yk, 200, 14, 9, 20);
+            point(xc - xk, yc + yk, 200, 14, 9, 20);
+            point(xc - xk, yc - yk, 200, 14, 9, 20);
 
             // Region 1
             p = roundNo(ry2-(rx2*b)+0.25*rx2);
@@ -280,10 +319,10 @@ void MainWindow::on_Draw_clicked()
                     py -= tworx2;
                     p += ry2+px-py;
                 }
-                point(xc + xk, yc + yk, 200, 14, 9, 0);
-                point(xc + xk, yc - yk, 200, 14, 9, 0);
-                point(xc - xk, yc + yk, 200, 14, 9, 0);
-                point(xc - xk, yc - yk, 200, 14, 9, 0);
+                point(xc + xk, yc + yk, 200, 14, 9, 20);
+                point(xc + xk, yc - yk, 200, 14, 9, 20);
+                point(xc - xk, yc + yk, 200, 14, 9, 20);
+                point(xc - xk, yc - yk, 200, 14, 9, 20);
             }
             // Region 2
             p = roundNo(ry2*(xk+0.5)*(xk+0.5)+rx2*(yk-1)*(yk-1) - rx2*ry2);
@@ -297,10 +336,10 @@ void MainWindow::on_Draw_clicked()
                     px += twory2;
                     p += rx2-py+px;
                 }
-                point(xc + xk, yc + yk, 200, 14, 9, 0);
-                point(xc + xk, yc - yk, 200, 14, 9, 0);
-                point(xc - xk, yc + yk, 200, 14, 9, 0);
-                point(xc - xk, yc - yk, 200, 14, 9, 0);
+                point(xc + xk, yc + yk, 200, 14, 9, 20);
+                point(xc + xk, yc - yk, 200, 14, 9, 20);
+                point(xc - xk, yc + yk, 200, 14, 9, 20);
+                point(xc - xk, yc - yk, 200, 14, 9, 20);
             }
 
         }else if(ui->polarRadioCircle->isChecked()){
@@ -308,10 +347,10 @@ void MainWindow::on_Draw_clicked()
                 double theta_radians = M_PI * theta_degrees / 180;
                 int xk = roundNo(a * cos (theta_radians));
                 int yk = roundNo(b * sin (theta_radians));
-                point(xc + xk, yc + yk, 253, 143, 10, 0);
-                point(xc + xk, yc - yk, 253, 143, 10, 0);
-                point(xc - xk, yc + yk, 253, 143, 10, 0);
-                point(xc - xk, yc - yk, 253, 143, 10, 0);
+                point(xc + xk, yc + yk, 253, 143, 10, 20);
+                point(xc + xk, yc - yk, 253, 143, 10, 20);
+                point(xc - xk, yc + yk, 253, 143, 10, 20);
+                point(xc - xk, yc - yk, 253, 143, 10, 20);
             }
         }
     }
@@ -409,5 +448,109 @@ void MainWindow::on_set_center_point_ellipse_clicked()
 {
     cpe1.setX(ui->frame->x);
     cpe1.setY(ui->frame->y);
+}
+
+void MainWindow::on_boundary_fill_btn_clicked(){
+    qDebug() << lastP.x() << " " << lastP.y() << "\n";
+    on_boundary_fill_btn_clicked_recur(lastP);
+}
+
+void MainWindow::on_boundary_fill_btn_clicked_recur(QPoint p){
+    if(p.x() < 0 || p.y() < 0 || p.x() >= img.width() || p.y() >= img.height()) return;
+    QRgb bordercolor = qRgb(143, 211, 0);
+    QRgb fillcolor = qRgb(160, 130, 140);
+    int gridSize = ui->grid_size->value();
+    if(img.pixel(p) == bordercolor || img.pixel(p) == fillcolor) return;
+
+
+    point(p.x(), p.y(), fillcolor);
+    delay(10);
+    on_boundary_fill_btn_clicked_recur(*(new QPoint(p.x()-gridSize, p.y())));
+    on_boundary_fill_btn_clicked_recur(*(new QPoint(p.x()+gridSize, p.y())));
+    on_boundary_fill_btn_clicked_recur(*(new QPoint(p.x(), p.y()-gridSize)));
+    on_boundary_fill_btn_clicked_recur(*(new QPoint(p.x(), p.y()+gridSize)));
+}
+
+
+void MainWindow::on_boundary_fill_8_connected_btn_clicked()
+{
+    qDebug() << lastP.x() << " " << lastP.y() << "\n";
+    on_boundary_fill_8_connected_btn_clicked_recur(lastP);
+}
+
+
+
+void MainWindow::on_boundary_fill_8_connected_btn_clicked_recur(QPoint p){
+    if(p.x() < 0 || p.y() < 0 || p.x() >= img.width() || p.y() >= img.height()) return;
+    QRgb bordercolor = qRgb(143, 211, 0);
+    QRgb fillcolor = qRgb(160, 130, 140);
+    int gridSize = ui->grid_size->value();
+    if(img.pixel(p) == bordercolor || img.pixel(p) == fillcolor) return;
+
+
+    point(p.x(), p.y(), fillcolor);
+    delay(10);
+    on_boundary_fill_8_connected_btn_clicked_recur(*(new QPoint(p.x()-gridSize, p.y())));
+    on_boundary_fill_8_connected_btn_clicked_recur(*(new QPoint(p.x()+gridSize, p.y())));
+    on_boundary_fill_8_connected_btn_clicked_recur(*(new QPoint(p.x(), p.y()-gridSize)));
+    on_boundary_fill_8_connected_btn_clicked_recur(*(new QPoint(p.x(), p.y()+gridSize)));
+
+    on_boundary_fill_8_connected_btn_clicked_recur(*(new QPoint(p.x()-gridSize, p.y()-gridSize)));
+    on_boundary_fill_8_connected_btn_clicked_recur(*(new QPoint(p.x()-gridSize, p.y()+gridSize)));
+    on_boundary_fill_8_connected_btn_clicked_recur(*(new QPoint(p.x()+gridSize, p.y()-gridSize)));
+    on_boundary_fill_8_connected_btn_clicked_recur(*(new QPoint(p.x()+gridSize, p.y()+gridSize)));
+}
+
+
+void MainWindow::on_flood_fill_util(QPoint p){
+    if(p.x() < 0 || p.y() < 0 || p.x() >= img.width() || p.y() >= img.height()) return;
+    QRgb fillcolor = qRgb(160, 130, 140);
+    QRgb oldcolor = qRgb(0, 0, 0);
+    int gridSize = ui->grid_size->value();
+    if(img.pixel(p) == oldcolor){
+        point(p.x(), p.y(), fillcolor);
+        delay(10);
+
+        on_flood_fill_util(*(new QPoint(p.x()-gridSize, p.y())));
+        on_flood_fill_util(*(new QPoint(p.x()+gridSize, p.y())));
+        on_flood_fill_util(*(new QPoint(p.x(), p.y()-gridSize)));
+        on_flood_fill_util(*(new QPoint(p.x(), p.y()+gridSize)));
+    };
+}
+
+
+void MainWindow::on_flood_fill_8_connected_util(QPoint p){
+    if(p.x() < 0 || p.y() < 0 || p.x() >= img.width() || p.y() >= img.height()) return;
+    QRgb fillcolor = qRgb(160, 130, 140);
+    QRgb oldcolor = qRgb(0, 0, 0);
+    int gridSize = ui->grid_size->value();
+    if(img.pixel(p) == oldcolor){
+        point(p.x(), p.y(), fillcolor);
+        delay(10);
+
+        on_flood_fill_8_connected_util(*(new QPoint(p.x()-gridSize, p.y())));
+        on_flood_fill_8_connected_util(*(new QPoint(p.x()+gridSize, p.y())));
+        on_flood_fill_8_connected_util(*(new QPoint(p.x(), p.y()-gridSize)));
+        on_flood_fill_8_connected_util(*(new QPoint(p.x(), p.y()+gridSize)));
+
+        on_flood_fill_8_connected_util(*(new QPoint(p.x()-gridSize, p.y()-gridSize)));
+        on_flood_fill_8_connected_util(*(new QPoint(p.x()-gridSize, p.y()+gridSize)));
+        on_flood_fill_8_connected_util(*(new QPoint(p.x()+gridSize, p.y()-gridSize)));
+        on_flood_fill_8_connected_util(*(new QPoint(p.x()+gridSize, p.y()+gridSize)));
+
+    };
+}
+
+void MainWindow::on_flood_fill_btn_clicked()
+{
+    point(lastP.x(), lastP.y(), qRgb(0,0,0));
+    on_flood_fill_util(lastP);
+}
+
+
+void MainWindow::on_flood_fill_btn_8_connected_clicked()
+{
+    point(lastP.x(), lastP.y(), qRgb(0,0,0));
+    on_flood_fill_8_connected_util(lastP);
 }
 
