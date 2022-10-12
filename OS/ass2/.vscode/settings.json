@@ -9,6 +9,8 @@
         "string_view": "c",
         "semaphore.h": "c",
         "fcntl.h": "c",
-        "algorithm": "c"
+        "algorithm": "c",
+        "time.h": "c",
+        "stdio.h": "c"
     }
 }
