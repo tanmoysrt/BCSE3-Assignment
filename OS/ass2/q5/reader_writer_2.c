@@ -118,8 +118,10 @@ int main()
                 // Increment write counter
                 sem_wait(write_counter_mutex);
                 *write_counter++;
-                if (*write_counter == 1)
+                if (*write_counter == 1){
                     sem_wait(read_mutex);
+                    sem_wait(write_mutex);
+                }
                 sem_post(write_counter_mutex);
 
                 // Write
@@ -131,6 +133,7 @@ int main()
                 *write_counter--;
                 if (*write_counter == 0)
                     sem_post(read_mutex);
+                    sem_post(write_mutex);
                 sem_post(write_counter_mutex);
                 exit(1);
             }
