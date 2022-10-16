@@ -23,7 +23,8 @@ int getRandomNumber()
     return rand() % ((MAX_RANDOM_NUMBER + 1) - MIN_RANDOM_NUMBER) + MIN_RANDOM_NUMBER;
 }
 
-struct Buffer{
+struct Buffer
+{
     int data[BUFFER_MAX_ELEMENTS + 1];
     int readCur;  // read cursor
     int writeCur; // write cursor
@@ -32,17 +33,14 @@ struct Buffer{
     sem_t *data_available_mutex;
 };
 
-// struct ConsumerPIDs
-// {
-//     int *pids;
-//     int count;
-// };
-
 void initBuffer(struct Buffer *buffer)
 {
     buffer->readCur = -1;
     buffer->writeCur = 0;
     buffer->count = 0;
+
+    sem_unlink("mutex74656");
+    sem_unlink("mutex7496");
 
     // Init mutex
     buffer->space_available_mutex = sem_open("mutex74656", O_CREAT, 0777, 1);
@@ -69,14 +67,7 @@ int getData(struct Buffer *buffer)
     return buffer->data[buffer->readCur];
 }
 
-// void addConsumer(struct ConsumerPIDs *consumerPIDs, int pid)
-// {
-//     consumerPIDs->pids[consumerPIDs->count] = pid;
-//     consumerPIDs->count = consumerPIDs->count + 1;
-// }
-
 struct Buffer *buffer;
-// struct ConsumerPIDs *consumerPIDs;
 int *total;
 int *noOfProducersExited;
 
@@ -89,14 +80,11 @@ int main()
     buffer = mmap(NULL, sizeof *buffer, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
     total = mmap(NULL, sizeof *total, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
     noOfProducersExited = mmap(NULL, sizeof *total, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
-    // consumerPIDs = mmap(NULL, sizeof *consumerPIDs, PROT_READ | PROT_WRITE, MAP_SHARED | MAP_ANONYMOUS, -1, 0);
 
     initBuffer(buffer);
 
     *total = 0;
     *noOfProducersExited = 0;
-    // consumerPIDs->count = 0;
-    // consumerPIDs->pids = (int *)malloc((noConsumers + 1) * sizeof(int));
 
     // Get number of producers and consumers
     printf("Enter number of producers: ");
@@ -112,7 +100,7 @@ int main()
 
     int id;
 
-    // Spin producers 
+    // Spin producers
     for (int i = 0; i < noProducers; i++)
     {
         // Producers
@@ -147,8 +135,8 @@ int main()
             id = fork();
             if (id == 0)
             {
-                while (1){
-                    // if(*noOfProducersExited == noProducers && buffer->count == 0) break;
+                while (1)
+                {
                     // If no data please wait
                     while (buffer->count == 0)
                     {
@@ -161,28 +149,21 @@ int main()
                     int data = getData(buffer);
                     // Add
                     *total = *total + data;
-                    // Print log
-                    // printf("Consumer %d consumed no %d\n", getpid(), data);
                 }
                 exit(0);
             }
         }
 
-        for (int i = 0; i < noConsumers; i++)
-        {
+        for (int i = 0; i < noConsumers; i++){
             wait(NULL);
         }
 
-        while (noProducers < *noOfProducersExited)
-        {
+        while (noProducers < *noOfProducersExited){
             usleep(10000);
         }
-        
 
         printf("Total %d\n", *total);
     }
-
-
 
     return 0;
 }

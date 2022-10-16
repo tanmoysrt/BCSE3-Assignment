@@ -88,16 +88,27 @@ class BankersUtil{
         }
 
         // create copy of available resources, allocated resources and need resources
-        int[] available_resources_copy = Arrays.copyOf(available_resources, available_resources.length);
-        int[][] allocated_resources_copy = Arrays.copyOf(allocated_resources, allocated_resources.length);
-        int[][] need_resources_copy = Arrays.copyOf(need_resources, need_resources.length);
+        int[] available_resources_copy = new int[no_of_resources];
+        int[][] allocated_resources_copy = new int[no_of_process][no_of_resources];
+        int[][] need_resources_copy =  new int[no_of_process][no_of_resources];
+
+        // copy data
+        for(int i=0;i<no_of_resources;i++){
+            available_resources_copy[i] = available_resources[i];
+        }
+        for(int i=0;i<no_of_process;i++){
+            for(int j=0;j<no_of_resources;j++){
+                allocated_resources_copy[i][j] = allocated_resources[i][j];
+                need_resources_copy[i][j] = need_resources[i][j];
+            }
+        }
 
         // grant request
         for(int i=0;i<no_of_resources;i++){
             available_resources_copy[i] -= request[i];
             allocated_resources_copy[process_no][i] += request[i];
             need_resources_copy[process_no][i] -= request[i];
-        }
+        }        
 
         // create variables
         boolean[] finished = new boolean[no_of_process];
@@ -107,7 +118,7 @@ class BankersUtil{
         // calculate safe sequence
         int index = 0;
         boolean flag = false;
-        System.out.println(Arrays.toString(finished));
+
 
         while(true){
             for(int i=0;i<no_of_process;i++){
@@ -120,21 +131,19 @@ class BankersUtil{
                         }
                     }
 
-                    if(canfinish == false) continue;
-
-                    for(int j=0;j<no_of_resources;j++){
-                        work[j] += allocated_resources_copy[i][j];
+                    if(canfinish){
+                        for(int j=0;j<no_of_resources;j++){
+                            work[j] += allocated_resources_copy[i][j];
+                        }
+                        finished[i] = true;
+                        safe_sequence_copy[index++] = i;
+                        flag = true;
                     }
-                    finished[i] = true;
-                    safe_sequence_copy[index++] = i;
-                    flag = true;
                 }
             }
             if(!flag) break;
             flag = false;
         }
-
-        System.out.println(Arrays.toString(finished));
 
         // check if safe sequence is valid
         for(int i=0;i<no_of_process;i++){

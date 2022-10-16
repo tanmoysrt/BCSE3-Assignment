@@ -11,6 +11,7 @@ int main(){
 
     int id = fork();
     if(id == 0){
+        // child
         close(fd[0]);
         int x;
         printf("Enter a number: ");
@@ -18,6 +19,7 @@ int main(){
         write(fd[1], &x, sizeof(x));
         close(fd[1]);
     }else{
+        // parent
         close(fd[1]);
         int x;
         read(fd[0], &x, sizeof(x));

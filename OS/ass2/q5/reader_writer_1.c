@@ -14,10 +14,6 @@
 #include <sys/ipc.h>
 #include <sys/shm.h>
 
-// Reader can read parallaly
-// Writer will wait for all read to finish before writing
-// While writing, no other reader or writer can read or write
-
 #define no_of_readers 5
 #define MIN_RANDOM_NUMBER 1
 #define MAX_RANDOM_NUMBER 5

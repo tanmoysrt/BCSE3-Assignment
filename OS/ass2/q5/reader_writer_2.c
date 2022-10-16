@@ -14,11 +14,6 @@
 #include <sys/ipc.h>
 #include <sys/shm.h>
 
-// Reader can read parallaly
-// Writer will wait for all read to finish before writing
-// While writing, no other reader or writer can read or write
-
-
 #define MIN_RANDOM_NUMBER 1
 #define MAX_RANDOM_NUMBER 5
 
@@ -146,26 +141,8 @@ int main()
             wait(NULL);
         }
         wait(NULL);
-        // time_t t;
-        // srand((int)time(&t) % getpid());
-        // // Start writer process
-        // sleep(getRandomNumber());
-        // // Wait for all readers to finish
-        // sem_wait(write_mutex);
-
-        // // Write
-        // *resource = getRandomNumber();
-        // printf("Writer wrote %d\n", *resource);
-
-        // // Release write mutex
-        // sem_post(write_mutex);
     }
 
-    // Wait for all childs to finish
-    // for (int i = 0; i < no_of_readers + 1; i++)
-    // {
-    //     wait(NULL);
-    // }
 
     return 0;
 }
