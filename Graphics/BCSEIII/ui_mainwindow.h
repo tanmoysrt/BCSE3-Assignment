@@ -12,6 +12,7 @@
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
+#include <QtWidgets/QComboBox>
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QLabel>
@@ -73,11 +74,24 @@ public:
     QSpinBox *ellipseB;
     QPushButton *set_center_point_ellipse;
     QFrame *line_2;
-    QPushButton *boundary_fill_btn;
-    QPushButton *flood_fill_btn;
     QLabel *label_4;
+    QGroupBox *groupBox_3;
+    QPushButton *boundary_fill_btn;
     QPushButton *boundary_fill_8_connected_btn;
+    QGroupBox *groupBox_4;
+    QPushButton *flood_fill_btn;
     QPushButton *flood_fill_btn_8_connected;
+    QFrame *line_10;
+    QLabel *label_6;
+    QGroupBox *groupBox_5;
+    QPushButton *set_vertex_scanline;
+    QPushButton *clear_vertex_scanline;
+    QFrame *line_11;
+    QLabel *label_7;
+    QPushButton *select_old_color;
+    QWidget *old_color;
+    QWidget *fill_color;
+    QComboBox *fill_color_combo;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -261,21 +275,66 @@ public:
         line_2->setGeometry(QRect(993, 0, 20, 661));
         line_2->setFrameShape(QFrame::VLine);
         line_2->setFrameShadow(QFrame::Sunken);
-        boundary_fill_btn = new QPushButton(centralWidget);
-        boundary_fill_btn->setObjectName(QString::fromUtf8("boundary_fill_btn"));
-        boundary_fill_btn->setGeometry(QRect(1020, 40, 341, 31));
-        flood_fill_btn = new QPushButton(centralWidget);
-        flood_fill_btn->setObjectName(QString::fromUtf8("flood_fill_btn"));
-        flood_fill_btn->setGeometry(QRect(1020, 140, 341, 31));
         label_4 = new QLabel(centralWidget);
         label_4->setObjectName(QString::fromUtf8("label_4"));
-        label_4->setGeometry(QRect(1140, 10, 111, 17));
-        boundary_fill_8_connected_btn = new QPushButton(centralWidget);
+        label_4->setGeometry(QRect(1130, 150, 141, 17));
+        groupBox_3 = new QGroupBox(centralWidget);
+        groupBox_3->setObjectName(QString::fromUtf8("groupBox_3"));
+        groupBox_3->setGeometry(QRect(1020, 170, 341, 71));
+        boundary_fill_btn = new QPushButton(groupBox_3);
+        boundary_fill_btn->setObjectName(QString::fromUtf8("boundary_fill_btn"));
+        boundary_fill_btn->setGeometry(QRect(10, 30, 151, 31));
+        boundary_fill_8_connected_btn = new QPushButton(groupBox_3);
         boundary_fill_8_connected_btn->setObjectName(QString::fromUtf8("boundary_fill_8_connected_btn"));
-        boundary_fill_8_connected_btn->setGeometry(QRect(1020, 90, 341, 31));
-        flood_fill_btn_8_connected = new QPushButton(centralWidget);
+        boundary_fill_8_connected_btn->setGeometry(QRect(180, 30, 151, 31));
+        groupBox_4 = new QGroupBox(centralWidget);
+        groupBox_4->setObjectName(QString::fromUtf8("groupBox_4"));
+        groupBox_4->setGeometry(QRect(1020, 250, 341, 71));
+        flood_fill_btn = new QPushButton(groupBox_4);
+        flood_fill_btn->setObjectName(QString::fromUtf8("flood_fill_btn"));
+        flood_fill_btn->setGeometry(QRect(10, 30, 151, 31));
+        flood_fill_btn_8_connected = new QPushButton(groupBox_4);
         flood_fill_btn_8_connected->setObjectName(QString::fromUtf8("flood_fill_btn_8_connected"));
-        flood_fill_btn_8_connected->setGeometry(QRect(1020, 190, 341, 31));
+        flood_fill_btn_8_connected->setGeometry(QRect(180, 30, 151, 31));
+        line_10 = new QFrame(centralWidget);
+        line_10->setObjectName(QString::fromUtf8("line_10"));
+        line_10->setGeometry(QRect(1000, 330, 381, 16));
+        line_10->setFrameShape(QFrame::HLine);
+        line_10->setFrameShadow(QFrame::Sunken);
+        label_6 = new QLabel(centralWidget);
+        label_6->setObjectName(QString::fromUtf8("label_6"));
+        label_6->setGeometry(QRect(1130, 360, 111, 17));
+        groupBox_5 = new QGroupBox(centralWidget);
+        groupBox_5->setObjectName(QString::fromUtf8("groupBox_5"));
+        groupBox_5->setGeometry(QRect(1020, 390, 341, 71));
+        set_vertex_scanline = new QPushButton(groupBox_5);
+        set_vertex_scanline->setObjectName(QString::fromUtf8("set_vertex_scanline"));
+        set_vertex_scanline->setGeometry(QRect(10, 30, 151, 31));
+        clear_vertex_scanline = new QPushButton(groupBox_5);
+        clear_vertex_scanline->setObjectName(QString::fromUtf8("clear_vertex_scanline"));
+        clear_vertex_scanline->setGeometry(QRect(180, 30, 151, 31));
+        line_11 = new QFrame(centralWidget);
+        line_11->setObjectName(QString::fromUtf8("line_11"));
+        line_11->setGeometry(QRect(1000, 130, 381, 16));
+        line_11->setFrameShape(QFrame::HLine);
+        line_11->setFrameShadow(QFrame::Sunken);
+        label_7 = new QLabel(centralWidget);
+        label_7->setObjectName(QString::fromUtf8("label_7"));
+        label_7->setGeometry(QRect(1150, 10, 81, 17));
+        select_old_color = new QPushButton(centralWidget);
+        select_old_color->setObjectName(QString::fromUtf8("select_old_color"));
+        select_old_color->setGeometry(QRect(1030, 50, 141, 31));
+        old_color = new QWidget(centralWidget);
+        old_color->setObjectName(QString::fromUtf8("old_color"));
+        old_color->setGeometry(QRect(1030, 90, 141, 31));
+        old_color->setAutoFillBackground(true);
+        fill_color = new QWidget(centralWidget);
+        fill_color->setObjectName(QString::fromUtf8("fill_color"));
+        fill_color->setGeometry(QRect(1210, 90, 141, 31));
+        fill_color->setAutoFillBackground(true);
+        fill_color_combo = new QComboBox(centralWidget);
+        fill_color_combo->setObjectName(QString::fromUtf8("fill_color_combo"));
+        fill_color_combo->setGeometry(QRect(1210, 50, 141, 31));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
@@ -323,11 +382,19 @@ public:
         set_another_point_circle->setText(QCoreApplication::translate("MainWindow", "Set another point", nullptr));
         draw_ellipse->setText(QCoreApplication::translate("MainWindow", "Draw Ellipse", nullptr));
         set_center_point_ellipse->setText(QCoreApplication::translate("MainWindow", "Set center point", nullptr));
-        boundary_fill_btn->setText(QCoreApplication::translate("MainWindow", "Boundary Fill 4 Connected", nullptr));
-        flood_fill_btn->setText(QCoreApplication::translate("MainWindow", "Flood Fill 4 Connected", nullptr));
-        label_4->setText(QCoreApplication::translate("MainWindow", "Color Filling", nullptr));
-        boundary_fill_8_connected_btn->setText(QCoreApplication::translate("MainWindow", "Boundary Fill 8 Connected", nullptr));
-        flood_fill_btn_8_connected->setText(QCoreApplication::translate("MainWindow", "Flood Fill 8 Connected", nullptr));
+        label_4->setText(QCoreApplication::translate("MainWindow", "Color Filling Algo", nullptr));
+        groupBox_3->setTitle(QCoreApplication::translate("MainWindow", "Boundary Fill", nullptr));
+        boundary_fill_btn->setText(QCoreApplication::translate("MainWindow", "4 Connected", nullptr));
+        boundary_fill_8_connected_btn->setText(QCoreApplication::translate("MainWindow", "8 Connected", nullptr));
+        groupBox_4->setTitle(QCoreApplication::translate("MainWindow", "Flood Fill", nullptr));
+        flood_fill_btn->setText(QCoreApplication::translate("MainWindow", "4 Connected", nullptr));
+        flood_fill_btn_8_connected->setText(QCoreApplication::translate("MainWindow", "8 Connected", nullptr));
+        label_6->setText(QCoreApplication::translate("MainWindow", "ScanLine Algo", nullptr));
+        groupBox_5->setTitle(QCoreApplication::translate("MainWindow", "Vertex Related", nullptr));
+        set_vertex_scanline->setText(QCoreApplication::translate("MainWindow", "Set Vertex", nullptr));
+        clear_vertex_scanline->setText(QCoreApplication::translate("MainWindow", "Clear Vertex", nullptr));
+        label_7->setText(QCoreApplication::translate("MainWindow", "Pick Colors", nullptr));
+        select_old_color->setText(QCoreApplication::translate("MainWindow", "Select Old Color", nullptr));
     } // retranslateUi
 
 };

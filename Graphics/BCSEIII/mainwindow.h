@@ -54,10 +54,18 @@ private slots:
 
     void on_flood_fill_btn_8_connected_clicked();
 
+    void on_select_old_color_clicked();
+
+
+    void on_fill_color_combo_currentTextChanged(const QString &arg1);
+
 private:
     Ui::MainWindow *ui;
     QPoint p1,p2, cp1, cp2, centerPointAxis, cpe1;
+    QRgb fillColor = qRgb(160, 130, 140);
+    QRgb oldColor = qRgb(0, 0, 0);
     int noOfPolygonPoints;
+    bool isPickColor=false;
     void point(int,int,int,int,int, int);
     void point(int,int,QRgb);
     QPoint lastP;

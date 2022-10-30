@@ -622,7 +622,7 @@ background-color: rgb(85, 255, 255);</string>
     <property name="geometry">
      <rect>
       <x>1130</x>
-      <y>10</y>
+      <y>150</y>
       <width>141</width>
       <height>17</height>
      </rect>
@@ -635,7 +635,7 @@ background-color: rgb(85, 255, 255);</string>
     <property name="geometry">
      <rect>
       <x>1020</x>
-      <y>30</y>
+      <y>170</y>
       <width>341</width>
       <height>71</height>
      </rect>
@@ -674,7 +674,7 @@ background-color: rgb(85, 255, 255);</string>
     <property name="geometry">
      <rect>
       <x>1020</x>
-      <y>110</y>
+      <y>250</y>
       <width>341</width>
       <height>71</height>
      </rect>
@@ -713,13 +713,140 @@ background-color: rgb(85, 255, 255);</string>
     <property name="geometry">
      <rect>
       <x>1000</x>
-      <y>190</y>
+      <y>330</y>
       <width>381</width>
       <height>16</height>
      </rect>
     </property>
     <property name="orientation">
      <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>1130</x>
+      <y>360</y>
+      <width>111</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>ScanLine Algo</string>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_5">
+    <property name="geometry">
+     <rect>
+      <x>1020</x>
+      <y>390</y>
+      <width>341</width>
+      <height>71</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Vertex Related</string>
+    </property>
+    <widget class="QPushButton" name="set_vertex_scanline">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>151</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Set Vertex</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="clear_vertex_scanline">
+     <property name="geometry">
+      <rect>
+       <x>180</x>
+       <y>30</y>
+       <width>151</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Clear Vertex</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="Line" name="line_11">
+    <property name="geometry">
+     <rect>
+      <x>1000</x>
+      <y>130</y>
+      <width>381</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="orientation">
+     <enum>Qt::Horizontal</enum>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_7">
+    <property name="geometry">
+     <rect>
+      <x>1150</x>
+      <y>10</y>
+      <width>81</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Pick Colors</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="select_old_color">
+    <property name="geometry">
+     <rect>
+      <x>1030</x>
+      <y>50</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Select Old Color</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="old_color" native="true">
+    <property name="geometry">
+     <rect>
+      <x>1030</x>
+      <y>90</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QWidget" name="fill_color" native="true">
+    <property name="geometry">
+     <rect>
+      <x>1210</x>
+      <y>90</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QComboBox" name="fill_color_combo">
+    <property name="geometry">
+     <rect>
+      <x>1210</x>
+      <y>50</y>
+      <width>141</width>
+      <height>31</height>
+     </rect>
     </property>
    </widget>
   </widget>

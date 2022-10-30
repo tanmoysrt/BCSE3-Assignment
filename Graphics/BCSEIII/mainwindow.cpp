@@ -35,6 +35,12 @@ MainWindow::MainWindow(QWidget *parent) :
 //    ui->x_axis->hide();
 //    ui->y_axis->hide();
 
+    ui->fill_color_combo->addItem("red");
+    ui->fill_color_combo->addItem("blue");
+    ui->fill_color_combo->addItem("white");
+    ui->fill_color_combo->addItem("green");
+    ui->fill_color_combo->addItem("orange");
+
     // Mouse event
     connect(ui->frame,SIGNAL(Mouse_Pos()),this,SLOT(Mouse_Pressed()));
     connect(ui->frame,SIGNAL(sendMousePosition(QPoint&)),this,SLOT(showMousePosition(QPoint&)));
@@ -102,6 +108,13 @@ void MainWindow::showMousePosition(QPoint &pos)
 }
 void MainWindow::Mouse_Pressed()
 {
+    if(isPickColor){
+        oldColor = img.pixel(QPoint(ui->frame->x, ui->frame->y));
+//        oldColor.
+        ui->old_color->setPalette(QPalette(QColor(oldColor)));
+        isPickColor = false;
+        return;
+    }
     int j = ui->grid_size->value();
 
     ui->mouse_pressed->setText(" X : "+QString::number(roundNo(((ui->frame->x-centerPointAxis.x()))/j))+", Y : "+QString::number(roundNo((centerPointAxis.y()-ui->frame->y)/j)));
@@ -504,11 +517,9 @@ void MainWindow::on_boundary_fill_8_connected_btn_clicked_recur(QPoint p){
 
 void MainWindow::on_flood_fill_util(QPoint p){
     if(p.x() < 0 || p.y() < 0 || p.x() >= img.width() || p.y() >= img.height()) return;
-    QRgb fillcolor = qRgb(160, 130, 140);
-    QRgb oldcolor = qRgb(0, 0, 0);
     int gridSize = ui->grid_size->value();
-    if(img.pixel(p) == oldcolor){
-        point(p.x(), p.y(), fillcolor);
+    if(img.pixel(p) == oldColor ||  img.pixel(p) == qRgb(0,0,0)){
+        point(p.x(), p.y(), fillColor);
         delay(10);
 
         on_flood_fill_util(*(new QPoint(p.x()-gridSize, p.y())));
@@ -521,11 +532,9 @@ void MainWindow::on_flood_fill_util(QPoint p){
 
 void MainWindow::on_flood_fill_8_connected_util(QPoint p){
     if(p.x() < 0 || p.y() < 0 || p.x() >= img.width() || p.y() >= img.height()) return;
-    QRgb fillcolor = qRgb(160, 130, 140);
-    QRgb oldcolor = qRgb(0, 0, 0);
     int gridSize = ui->grid_size->value();
-    if(img.pixel(p) == oldcolor){
-        point(p.x(), p.y(), fillcolor);
+    if(img.pixel(p) == oldColor || img.pixel(p) == qRgb(0,0,0)){
+        point(p.x(), p.y(), fillColor);
         delay(10);
 
         on_flood_fill_8_connected_util(*(new QPoint(p.x()-gridSize, p.y())));
@@ -543,14 +552,42 @@ void MainWindow::on_flood_fill_8_connected_util(QPoint p){
 
 void MainWindow::on_flood_fill_btn_clicked()
 {
-    point(lastP.x(), lastP.y(), qRgb(0,0,0));
+    point(lastP.x(), lastP.y(), oldColor);
     on_flood_fill_util(lastP);
 }
 
 
 void MainWindow::on_flood_fill_btn_8_connected_clicked()
 {
-    point(lastP.x(), lastP.y(), qRgb(0,0,0));
+    point(lastP.x(), lastP.y(), oldColor);
     on_flood_fill_8_connected_util(lastP);
+}
+
+
+void MainWindow::on_select_old_color_clicked()
+{
+    isPickColor = true;
+}
+
+
+
+void MainWindow::on_fill_color_combo_currentTextChanged(const QString &arg1)
+{
+    if(arg1 == "red"){
+        fillColor = qRgb(136, 8, 8);
+    }
+    if(arg1 == "blue"){
+        fillColor = qRgb(137, 207, 240);
+    }
+    if(arg1 == "white"){
+        fillColor = qRgb(255, 255, 255);
+    }
+    if(arg1 == "green"){
+        fillColor = qRgb(127, 255, 0);
+    }
+    if(arg1 == "orange"){
+        fillColor = qRgb(255, 191, 0);
+    }
+    ui->fill_color->setPalette(QPalette(QColor(fillColor)));
 }
 
