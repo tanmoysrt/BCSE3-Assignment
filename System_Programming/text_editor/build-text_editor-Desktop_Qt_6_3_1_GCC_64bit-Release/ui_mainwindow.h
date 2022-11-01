@@ -33,6 +33,7 @@ public:
     QPlainTextEdit *replace_word;
     QPushButton *find_and_replace_btn;
     QLabel *text_content;
+    QPushButton *find_btn;
     QMenuBar *menubar;
     QStatusBar *statusbar;
 
@@ -61,24 +62,28 @@ public:
         undo_btn->setFocusPolicy(Qt::ClickFocus);
         find_word = new QPlainTextEdit(centralwidget);
         find_word->setObjectName(QString::fromUtf8("find_word"));
-        find_word->setGeometry(QRect(420, 10, 111, 25));
+        find_word->setGeometry(QRect(10, 40, 111, 25));
         find_word->setFocusPolicy(Qt::ClickFocus);
         replace_word = new QPlainTextEdit(centralwidget);
         replace_word->setObjectName(QString::fromUtf8("replace_word"));
-        replace_word->setGeometry(QRect(540, 10, 111, 25));
+        replace_word->setGeometry(QRect(140, 40, 111, 25));
         replace_word->setFocusPolicy(Qt::ClickFocus);
         find_and_replace_btn = new QPushButton(centralwidget);
         find_and_replace_btn->setObjectName(QString::fromUtf8("find_and_replace_btn"));
-        find_and_replace_btn->setGeometry(QRect(670, 10, 121, 25));
+        find_and_replace_btn->setGeometry(QRect(370, 40, 131, 25));
         find_and_replace_btn->setFocusPolicy(Qt::ClickFocus);
         text_content = new QLabel(centralwidget);
         text_content->setObjectName(QString::fromUtf8("text_content"));
-        text_content->setGeometry(QRect(10, 50, 771, 511));
+        text_content->setGeometry(QRect(10, 70, 771, 491));
         text_content->setFocusPolicy(Qt::ClickFocus);
         text_content->setAutoFillBackground(false);
         text_content->setStyleSheet(QString::fromUtf8("background-color : rgb(255, 255, 255);"));
         text_content->setAlignment(Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop);
         text_content->setTextInteractionFlags(Qt::LinksAccessibleByMouse);
+        find_btn = new QPushButton(centralwidget);
+        find_btn->setObjectName(QString::fromUtf8("find_btn"));
+        find_btn->setGeometry(QRect(270, 40, 91, 25));
+        find_btn->setFocusPolicy(Qt::ClickFocus);
         MainWindow->setCentralWidget(centralwidget);
         menubar = new QMenuBar(MainWindow);
         menubar->setObjectName(QString::fromUtf8("menubar"));
@@ -97,11 +102,12 @@ public:
     {
         MainWindow->setWindowTitle(QCoreApplication::translate("MainWindow", "Simple Text Editor", nullptr));
         open_from_file->setText(QCoreApplication::translate("MainWindow", "Open", nullptr));
-        save_to_file->setText(QCoreApplication::translate("MainWindow", "Save", nullptr));
+        save_to_file->setText(QCoreApplication::translate("MainWindow", "Save As", nullptr));
         redo_btn->setText(QCoreApplication::translate("MainWindow", "Redo", nullptr));
         undo_btn->setText(QCoreApplication::translate("MainWindow", "Undo", nullptr));
         find_and_replace_btn->setText(QCoreApplication::translate("MainWindow", "Find & Replace", nullptr));
         text_content->setText(QString());
+        find_btn->setText(QCoreApplication::translate("MainWindow", "Find", nullptr));
     } // retranslateUi
 
 };

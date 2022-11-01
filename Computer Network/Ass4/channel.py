@@ -1,3 +1,4 @@
+import json
 import socket
 import helpers
 
@@ -75,7 +76,7 @@ class Channel():
                 finaldata = helpers.addTuples(finaldata,temp)
             print('Bit',i+1,'of each station is:', end=' ')
             print(d)	
-            print('Final data is:'+finaldata)
+            print('Final data is:'+json.dumps(finaldata))
             
             choice = input('Does any station want to receive data ? (y/n) ')
             while choice == 'y':
@@ -88,7 +89,7 @@ class Channel():
                 else:
                     temp = helpers.multiplyTuples(finaldata, c[stationNo-1])
                     summ = sum(temp)
-                    data = str(summ//n)
+                    databit = str(summ//n)
                     conn = self.stationconn[receiverNo-1]
                     conn[0].sendto(databit.encode(), conn[1])
                     print('Multiplying final data with Code bits of sender station',stationNo)

@@ -21,6 +21,7 @@ public:
     QStack<int> undoStack;
     QStack<QString> redoStack;
 
+
     QTimer *timer;
 
 
@@ -52,5 +53,6 @@ private slots:
     void on_redo_btn_clicked();
     void on_undo_btn_clicked();
     void addPosToUndoStack();
+    void on_find_btn_clicked();
 };
 #endif // MAINWINDOW_H

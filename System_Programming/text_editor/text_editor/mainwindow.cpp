@@ -98,7 +98,6 @@ void MainWindow::addPosToUndoStack(){
     undoStack.push(characterCount);
 }
 
-
 // Remove last character on backspace click
 void MainWindow::removeLastCharacter(){
     int len = text.length();
@@ -107,7 +106,6 @@ void MainWindow::removeLastCharacter(){
     text.chop(1);
     redoStack.append(c);
 }
-
 
 // Redo
 void MainWindow::on_redo_btn_clicked(){
@@ -130,6 +128,8 @@ void MainWindow::on_undo_btn_clicked()
 
 // Refresh UI
 void MainWindow::refreshUI(){
+    text = text.remove("<span style=\"background-color:yellow\">");
+    text = text.remove("</span>");
     ui->text_content->setText(text);
     ui->redo_btn->setDisabled(redoStack.empty());
     ui->undo_btn->setDisabled(undoStack.empty());
@@ -167,4 +167,11 @@ void MainWindow::on_open_from_file_clicked()
     refreshUI();
 }
 
+
+
+void MainWindow::on_find_btn_clicked(){
+    refreshUI();
+    text = text.replace(ui->find_word->toPlainText(), "<span style=\"background-color:yellow\">" + ui->find_word->toPlainText() + "</span>");
+    ui->text_content->setText(text);
+}
 

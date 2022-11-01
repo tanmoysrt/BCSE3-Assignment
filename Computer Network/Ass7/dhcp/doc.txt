@@ -1,0 +1,61 @@
+------------------------
+|Value  Message Type   |
+-----   ----------------
+|   1     DHCPDISCOVER |
+|   2     DHCPOFFER    |
+|   3     DHCPREQUEST  |
+|   4     DHCPDECLINE  | x
+|   5     DHCPACK      |
+|   6     DHCPNAK      |
+|   7     DHCPRELEASE  | x
+|   8     DHCPINFORM   | x
+------------------------
+
+Frame format
+Request Type [1-> request, 2-> reply] | Message Type | Transaction ID | Client MAC Address | Client IP Address | Lease Time | Subnet Mask | Gateway IP | DNS IP | Host Name
+
+
+Necessary params
+DHCP Discover ->
+               Request Type = 1
+               Message Type 1
+               Transaction ID = Fixed for the session
+               Client MAC Address
+               Client IP Address = 0.0.0.0
+               Host Name = 'Client 1'
+
+DHCP Offer ->
+                Request Type = 2
+                Message Type 2
+                Transaction ID = Fixed for the session
+                Client MAC Address
+                Client IP Address
+                Host Name = 'Server 1'
+
+DHCP Request ->
+                Request Type = 1
+                Message Type 3
+                Transaction ID = Fixed for the session
+                Client MAC Address
+                Client IP Address =
+                Host Name = 'Client 1'
+
+DHCP ACK ->
+                Request Type = 2
+                Message Type 5
+                Transaction ID = Fixed for the session
+                Client MAC Address
+                Client IP Address
+                Lease Time
+                Subnet Mask
+                Gateway IP
+                DNS IP
+                Host Name = 'Server 1'
+
+DHCP NAK ->
+                Request Type = 2
+                Message Type 6
+                Transaction ID = Fixed for the session
+                Client MAC Address
+                Client IP Address
+                Host Name = 'Server 1'
