@@ -1,0 +1,11 @@
+docucollect.tanmoy.codes.	IN	A	13.233.122.240	360
+file.tanmoy.codes.	IN	A	43.205.231.38	360
+kuikform.tanmoy.codes.	IN	A	43.205.231.38	360
+stratathonapi.tanmoy.codes.	IN	A	43.205.231.38	440
+tanmoy.codes.	IN	A	76.76.21.20	440
+tanmoy.codes.	IN	A	76.76.21.21	460
+tanmoy.codes.	IN	A	76.76.21.22	460
+tanmoy.codes.	IN	TXT	v=spf1	450
+tanmoy.codes.	IN	TXT	"v=spf1 -al"	450
+tanmoy.codes.	IN	NS	benedict.ns.cloudflare.com	3600
+tanmoy.codes.	IN	NS	dara.ns.cloudflare.com	3600
