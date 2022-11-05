@@ -132,6 +132,10 @@ void MainWindow::Mouse_Pressed()
         centerPointAxis.setX(xnearest+1);
         centerPointAxis.setY(ynearest+1);
     }
+
+    if(addVertexToList){
+        vertices.append(lastP);
+    }
 }
 void MainWindow::on_show_axes_clicked()
 {
@@ -159,7 +163,12 @@ void MainWindow::on_set_point2_clicked()
         p2.setY(ui->frame->y);
     }
 }
-void MainWindow::on_Draw_clicked()
+
+void MainWindow::on_Draw_clicked(){
+    on_Draw_clicked(143,211,0);
+}
+
+void MainWindow::on_Draw_clicked(int red,int green,int blue)
 {
     int gridSize = ui->grid_size->value();
     clock_t start, end;
@@ -192,7 +201,7 @@ void MainWindow::on_Draw_clicked()
             for(int i=1; i<=steps; i++){
                 x += x_incr*gridSize;
                 y += y_incr*gridSize;
-                point(roundNo(x), roundNo(y));
+                point(roundNo(x), roundNo(y), red, green, blue);
             }
 
         }
@@ -220,8 +229,8 @@ void MainWindow::on_Draw_clicked()
             int decision = 2*dy - dx;
             int step = dx;
             for(int i=0;i<=step;i++) {
-                if(check) point(x,y);
-                else point(y,x);
+                if(check) point(x,y, red, green, blue);
+                else point(y,x, red, green, blue);
                 if(decision < 0) {
                     x += xinc*gridSize;
                     decision += 2*dy;
@@ -447,7 +456,6 @@ void MainWindow::delay(int n) {
     while (QTime::currentTime() < dieTime)
     QCoreApplication::processEvents(QEventLoop::AllEvents, 100);
 }
-
 void MainWindow::on_set_another_point_circle_clicked()
 {
     if(ui->draw_circle->isChecked()){
@@ -455,19 +463,15 @@ void MainWindow::on_set_another_point_circle_clicked()
         cp2.setY(ui->frame->y);
     }
 }
-
-
 void MainWindow::on_set_center_point_ellipse_clicked()
 {
     cpe1.setX(ui->frame->x);
     cpe1.setY(ui->frame->y);
 }
-
 void MainWindow::on_boundary_fill_btn_clicked(){
     qDebug() << lastP.x() << " " << lastP.y() << "\n";
     on_boundary_fill_btn_clicked_recur(lastP);
 }
-
 void MainWindow::on_boundary_fill_btn_clicked_recur(QPoint p){
     if(p.x() < 0 || p.y() < 0 || p.x() >= img.width() || p.y() >= img.height()) return;
     QRgb bordercolor = qRgb(143, 211, 0);
@@ -483,16 +487,11 @@ void MainWindow::on_boundary_fill_btn_clicked_recur(QPoint p){
     on_boundary_fill_btn_clicked_recur(*(new QPoint(p.x(), p.y()-gridSize)));
     on_boundary_fill_btn_clicked_recur(*(new QPoint(p.x(), p.y()+gridSize)));
 }
-
-
 void MainWindow::on_boundary_fill_8_connected_btn_clicked()
 {
     qDebug() << lastP.x() << " " << lastP.y() << "\n";
     on_boundary_fill_8_connected_btn_clicked_recur(lastP);
 }
-
-
-
 void MainWindow::on_boundary_fill_8_connected_btn_clicked_recur(QPoint p){
     if(p.x() < 0 || p.y() < 0 || p.x() >= img.width() || p.y() >= img.height()) return;
     QRgb bordercolor = qRgb(143, 211, 0);
@@ -513,8 +512,6 @@ void MainWindow::on_boundary_fill_8_connected_btn_clicked_recur(QPoint p){
     on_boundary_fill_8_connected_btn_clicked_recur(*(new QPoint(p.x()+gridSize, p.y()-gridSize)));
     on_boundary_fill_8_connected_btn_clicked_recur(*(new QPoint(p.x()+gridSize, p.y()+gridSize)));
 }
-
-
 void MainWindow::on_flood_fill_util(QPoint p){
     if(p.x() < 0 || p.y() < 0 || p.x() >= img.width() || p.y() >= img.height()) return;
     int gridSize = ui->grid_size->value();
@@ -528,8 +525,6 @@ void MainWindow::on_flood_fill_util(QPoint p){
         on_flood_fill_util(*(new QPoint(p.x(), p.y()+gridSize)));
     };
 }
-
-
 void MainWindow::on_flood_fill_8_connected_util(QPoint p){
     if(p.x() < 0 || p.y() < 0 || p.x() >= img.width() || p.y() >= img.height()) return;
     int gridSize = ui->grid_size->value();
@@ -549,28 +544,20 @@ void MainWindow::on_flood_fill_8_connected_util(QPoint p){
 
     };
 }
-
 void MainWindow::on_flood_fill_btn_clicked()
 {
     point(lastP.x(), lastP.y(), oldColor);
     on_flood_fill_util(lastP);
 }
-
-
 void MainWindow::on_flood_fill_btn_8_connected_clicked()
 {
     point(lastP.x(), lastP.y(), oldColor);
     on_flood_fill_8_connected_util(lastP);
 }
-
-
 void MainWindow::on_select_old_color_clicked()
 {
     isPickColor = true;
 }
-
-
-
 void MainWindow::on_fill_color_combo_currentTextChanged(const QString &arg1)
 {
     if(arg1 == "red"){
@@ -589,5 +576,229 @@ void MainWindow::on_fill_color_combo_currentTextChanged(const QString &arg1)
         fillColor = qRgb(255, 191, 0);
     }
     ui->fill_color->setPalette(QPalette(QColor(fillColor)));
+}
+
+// Polygon drawing
+void MainWindow::on_toggle_set_vertex_scanline_clicked(){
+    if(!addVertexToList) vertices.clear();
+    addVertexToList = !addVertexToList;
+    if(addVertexToList){
+        ui->toggle_set_vertex_scanline->setText("Done Selection");
+    }else{
+        ui->toggle_set_vertex_scanline->setText("Select Vertex");
+    }
+}
+void MainWindow::drawPolygon(QList<QPoint> points, int red=143,int green=211,int blue=0){
+    //Draw lines
+    if(points.length() < 2 ) return;
+    ui->draw_line->setChecked(true);
+    ui->bresenhamRadio->setChecked(true);
+    ui->ddaRadio->setChecked(false);
+    for (int i = 0; i < points.length()-1; ++i) {
+       p1 = points[i];
+       p2 = points[i+1];
+       on_Draw_clicked(red, green, blue);
+    }
+    // connect first and last point
+    p1 = points[0];
+    p2 = points[points.length()-1];
+    on_Draw_clicked(red, green, blue);
+    ui->draw_line->setChecked(false);
+    ui->bresenhamRadio->setChecked(false);
+}
+void MainWindow::on_draw_polygon_clicked(){
+    drawPolygon(vertices, 0, 150, 150);
+}
+void mat_mult(double a[3][3], double b[3], double res[3]){
+    int i,j;
+    for(i=0;i<3;i++){
+        res[i]=0;
+        for(j=0;j<3;j++)
+            res[i]+=(a[i][j]*b[j]);
+    }
+}
+void MainWindow::on_translate_btn_clicked()
+{
+    double tx = ui->translation_x->value();
+    double ty = ui->translation_y->value();
+    int k = ui->grid_size->value();
+
+    QList<QPoint> old_vertices;
+    // Deep copy
+    for (QPoint vertex : vertices) {
+       old_vertices.append(vertex);
+    }
+
+    tx = tx*k;
+    ty = ty*k;
+    ty = -ty;
+
+    double mat[3][3]={
+            {1,0,tx},
+            {0,1,ty},
+            {0,0,1}
+        };
+
+    double coord[3];
+    double res[3];
+    for(int i=0;i<vertices.length();i++){
+        coord[0] = vertices[i].x();
+        coord[1] = vertices[i].y();
+        coord[2]=1;
+        mat_mult(mat,coord,res);
+        vertices[i].setX(res[0]/res[2]);
+        vertices[i].setY(res[1]/res[2]);
+    }
+
+    drawPolygon(vertices,  100,100,100);
+}
+void MainWindow::on_scale_btn_clicked()
+{
+    double sx = ui->scale_x->value();
+    double sy = ui->scale_y->value();
+    int gridsize = ui->grid_size->value();
+
+    QList<QPoint> old_vertices;
+    // Deep copy
+    for (QPoint vertex : vertices) {
+       old_vertices.append(vertex);
+    }
+
+    // Pivot point
+    int pivotX = (lastP.x()/gridsize)*gridsize+gridsize/2;
+    int pivotY = (lastP.y()/gridsize)*gridsize+gridsize/2;
+
+    double mat[3][3]={
+            {sx,0,0},
+            {0,sy,0},
+            {0,0,1}
+        };
+    double coord[3];
+    double res[3];
+    for(int i=0;i<vertices.length();i++){
+        coord[0] = vertices[i].x() - pivotX;
+        coord[1] = pivotY-vertices[i].y();
+        coord[2]=1;
+        mat_mult(mat,coord,res);
+        vertices[i].setX(res[0]/res[2]+pivotX);
+        vertices[i].setY(pivotY-res[1]/res[2]);
+    }
+    drawPolygon(vertices,  50,150,90);
+}
+void MainWindow::on_rotate_btn_clicked()
+{
+    double angle = ui->rotation_angle->value();
+    int gridsize = ui->grid_size->value();
+
+    QList<QPoint> old_vertices;
+    // Deep copy
+    for (QPoint vertex : vertices) {
+       old_vertices.append(vertex);
+    }
+
+    // Pivot point
+    int pivotX = (lastP.x()/gridsize)*gridsize+gridsize/2;
+    int pivotY = (lastP.y()/gridsize)*gridsize+gridsize/2;
+
+    double dang=(double)angle*M_PI/180.0;
+    double sinang=sin(dang);
+    double cosang=cos(dang);
+
+    double mat[3][3]={
+            {cosang,-sinang,0},
+            {sinang,cosang,0},
+            {0,0,1}
+        };
+    double coord[3];
+    double res[3];
+    for(int i=0;i<vertices.length();i++){
+        coord[0] = vertices[i].x() - pivotX;
+        coord[1] = pivotY - vertices[i].y();
+        coord[2]=1;
+        mat_mult(mat,coord,res);
+        vertices[i].setX(res[0]/res[2]+pivotX);
+        vertices[i].setY( pivotY - res[1]/res[2]);
+    }
+    drawPolygon(vertices,  50,150,90);
+}
+void MainWindow::on_shear_btn_clicked()
+{
+    double shx = ui->shx->value();
+    double shy = ui->shy->value();
+    int gridsize = ui->grid_size->value();
+
+    QList<QPoint> old_vertices;
+    // Deep copy
+    for (QPoint vertex : vertices) {
+       old_vertices.append(vertex);
+    }
+
+    // Pivot point
+    int pivotX = (lastP.x()/gridsize)*gridsize+gridsize/2;
+    int pivotY = (lastP.y()/gridsize)*gridsize+gridsize/2;
+
+    double mat[3][3]={
+            {1,shx,0},
+            {shy,1,0},
+            {0,0,1}
+        };
+    double coord[3];
+    double res[3];
+    for(int i=0;i<vertices.length();i++){
+        coord[0] = vertices[i].x() - pivotX;
+        coord[1] = pivotY - vertices[i].y();
+        coord[2]=1;
+        mat_mult(mat,coord,res);
+        vertices[i].setX(res[0]/res[2]+pivotX);
+        vertices[i].setY(pivotY-res[1]/res[2]);
+    }
+    drawPolygon(vertices,  50,150,90);
+}
+void MainWindow::on_reflect_btn_clicked(){
+        int rx, ry;
+        int gridsize = ui->grid_size->value();
+
+        QList<QPoint> old_vertices;
+        // Deep copy
+        for (QPoint vertex : vertices) {
+           old_vertices.append(vertex);
+        }
+
+        // Pivot point
+        int pivotX = (lastP.x()/gridsize)*gridsize+gridsize/2;
+        int pivotY = (lastP.y()/gridsize)*gridsize+gridsize/2;
+
+        // rx ry
+        if(ui->reflect_origin->isChecked()){
+            rx = -1;
+            ry = -1;
+        }else if(ui->reflect_x_axis->isChecked()){
+            rx = 1;
+            ry = -1;
+        }else if(ui->reflect_y_axis->isChecked()){
+            rx = -1;
+            ry = 1;
+        }else{
+            return;
+        }
+
+        double mat[3][3]={
+                {rx*1.0,0,0},
+                {0,ry*1.0,0},
+                {0,0,1}
+            };
+
+        double coord[3];
+        double res[3];
+        for(int i=0;i<vertices.length();i++){
+            coord[0] = vertices[i].x()-pivotX;
+            coord[1] = pivotY- vertices[i].y();
+            coord[2]=1;
+            mat_mult(mat,coord,res);
+            vertices[i].setX(res[0]/res[2]+pivotX);
+            vertices[i].setY(pivotY-res[1]/res[2]);
+        }
+
+        drawPolygon(vertices,  100,100,100);
 }
 

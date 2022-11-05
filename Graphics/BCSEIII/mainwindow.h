@@ -59,6 +59,20 @@ private slots:
 
     void on_fill_color_combo_currentTextChanged(const QString &arg1);
 
+    void on_toggle_set_vertex_scanline_clicked();
+
+    void on_draw_polygon_clicked();
+
+    void on_translate_btn_clicked();
+
+    void on_scale_btn_clicked();
+
+    void on_rotate_btn_clicked();
+
+    void on_shear_btn_clicked();
+
+    void on_reflect_btn_clicked();
+
 private:
     Ui::MainWindow *ui;
     QPoint p1,p2, cp1, cp2, centerPointAxis, cpe1;
@@ -69,6 +83,9 @@ private:
     void point(int,int,int,int,int, int);
     void point(int,int,QRgb);
     QPoint lastP;
+    bool addVertexToList=false;
+    QList<QPoint> vertices ;
+
 //    void swap(int )
     int roundNo(float n);
     int nearestPoint(int actualPoint, int gridSize);
@@ -76,6 +93,8 @@ private:
     void on_boundary_fill_8_connected_btn_clicked_recur(QPoint p);
     void on_flood_fill_util(QPoint p);
     void on_flood_fill_8_connected_util(QPoint p);
+    void drawPolygon(QList<QPoint>,int,int,int);
+    void on_Draw_clicked(int, int, int);
 };
 
 #endif // MAINWINDOW_H
