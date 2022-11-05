@@ -1,6 +1,7 @@
 import socket
 import subprocess
 from threading import Thread
+from time import sleep
 
 
 # HOST = "127.0.0.1"  # Standard loopback interface address (localhost)
@@ -35,6 +36,7 @@ class TelentServer:
         self.host = host
         self.port = port
         self.exited = False
+        self.exitedListening = False
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.sock.bind((self.host, self.port))
         self.sock.settimeout(2)
@@ -54,8 +56,11 @@ class TelentServer:
             except socket.timeout:
                 if self.exited:
                     break
-                continue
-
+                else : 
+                    continue
+            except:
+                break
+        self.exitedListening = True
         
 
     def handleClient(self, conn:socket.socket, addr):
@@ -81,6 +86,8 @@ class TelentServer:
 
     def stopProcess(self):
         self.exited = True
+        while not self.exitedListening:
+            sleep(1)
         for t in self.threads_pool:
             try:
                 t.join()
