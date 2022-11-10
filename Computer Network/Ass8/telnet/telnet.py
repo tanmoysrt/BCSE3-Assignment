@@ -3,34 +3,6 @@ import subprocess
 from threading import Thread
 from time import sleep
 
-
-# HOST = "127.0.0.1"  # Standard loopback interface address (localhost)
-# PORT = 5000  # Port to listen on (non-privileged ports are > 1023)
-
-# sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-# sock.bind((HOST, PORT))
-# sock.listen()
-# conn, addr = sock.accept()
-
-# while True:
-#     try:
-#         data = conn.recv(1024)
-#         res = subprocess.run(data.decode().strip(), shell=True, capture_output=True, cwd="../")
-#         if res.returncode == 0:
-#             conn.sendall(res.stdout)
-#         else:
-#             conn.sendall(res.stderr)
-#         if not data:
-#             break
-#         if data.decode().strip() == "exit":
-#             break
-#     except:
-#         break
-
-# conn.close()
-# sock.close()
-
-
 class TelentServer:
     def __init__(self, host="127.0.0.1", port=5000):
         self.host = host

@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1382</width>
+    <width>1572</width>
     <height>736</height>
    </rect>
   </property>
@@ -874,26 +874,6 @@ background-color: rgb(85, 255, 255);</string>
     <property name="title">
      <string>Scale</string>
     </property>
-    <widget class="QSpinBox" name="scale_x">
-     <property name="geometry">
-      <rect>
-       <x>60</x>
-       <y>30</y>
-       <width>44</width>
-       <height>26</height>
-      </rect>
-     </property>
-    </widget>
-    <widget class="QSpinBox" name="scale_y">
-     <property name="geometry">
-      <rect>
-       <x>170</x>
-       <y>30</y>
-       <width>44</width>
-       <height>26</height>
-      </rect>
-     </property>
-    </widget>
     <widget class="QPushButton" name="scale_btn">
      <property name="geometry">
       <rect>
@@ -937,6 +917,26 @@ background-color: rgb(85, 255, 255);</string>
      </property>
      <property name="text">
       <string>SY</string>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="scale_x">
+     <property name="geometry">
+      <rect>
+       <x>50</x>
+       <y>30</y>
+       <width>65</width>
+       <height>26</height>
+      </rect>
+     </property>
+    </widget>
+    <widget class="QDoubleSpinBox" name="scale_y">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>30</y>
+       <width>65</width>
+       <height>26</height>
+      </rect>
      </property>
     </widget>
    </widget>
@@ -1095,7 +1095,7 @@ background-color: rgb(85, 255, 255);</string>
     <widget class="QCheckBox" name="reflect_x_axis">
      <property name="geometry">
       <rect>
-       <x>80</x>
+       <x>20</x>
        <y>30</y>
        <width>61</width>
        <height>23</height>
@@ -1108,7 +1108,7 @@ background-color: rgb(85, 255, 255);</string>
     <widget class="QCheckBox" name="reflect_y_axis">
      <property name="geometry">
       <rect>
-       <x>160</x>
+       <x>100</x>
        <y>30</y>
        <width>61</width>
        <height>23</height>
@@ -1118,17 +1118,212 @@ background-color: rgb(85, 255, 255);</string>
       <string>Y-Axis</string>
      </property>
     </widget>
-    <widget class="QCheckBox" name="reflect_origin">
+    <widget class="QCheckBox" name="reflect_line">
      <property name="geometry">
       <rect>
-       <x>10</x>
+       <x>180</x>
        <y>30</y>
-       <width>71</width>
+       <width>61</width>
        <height>23</height>
       </rect>
      </property>
      <property name="text">
-      <string>Origin</string>
+      <string>Line</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QPushButton" name="scanline_algo">
+    <property name="geometry">
+     <rect>
+      <x>1380</x>
+      <y>70</y>
+      <width>181</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Scanline Fill</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="scanline_algo_2">
+    <property name="geometry">
+     <rect>
+      <x>1380</x>
+      <y>30</y>
+      <width>181</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Init Edge Table</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="reflect_origin">
+    <property name="geometry">
+     <rect>
+      <x>1500</x>
+      <y>640</y>
+      <width>71</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Origin</string>
+    </property>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_11">
+    <property name="geometry">
+     <rect>
+      <x>1380</x>
+      <y>120</y>
+      <width>181</width>
+      <height>171</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Select points</string>
+    </property>
+    <widget class="QPushButton" name="saveline">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>161</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Save Line </string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_13">
+     <property name="geometry">
+      <rect>
+       <x>60</x>
+       <y>70</y>
+       <width>67</width>
+       <height>17</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Window</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="set_corner_1">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>90</y>
+       <width>161</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Set corner 1</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="set_corner_2">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>130</y>
+       <width>161</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Set corner 2</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_12">
+    <property name="geometry">
+     <rect>
+      <x>1380</x>
+      <y>300</y>
+      <width>171</width>
+      <height>111</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Clipping</string>
+    </property>
+    <widget class="QPushButton" name="csa">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>151</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>CSA</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="sha">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>70</y>
+       <width>151</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>SHA</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QGroupBox" name="groupBox_13">
+    <property name="geometry">
+     <rect>
+      <x>1380</x>
+      <y>430</y>
+      <width>171</width>
+      <height>151</height>
+     </rect>
+    </property>
+    <property name="title">
+     <string>Beizer Curve</string>
+    </property>
+    <widget class="QPushButton" name="setbezpoint">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>30</y>
+       <width>151</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Set point</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="clearbezpoint">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>70</y>
+       <width>151</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Clear points</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="drawBezierCurve">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>110</y>
+       <width>151</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Draw</string>
      </property>
     </widget>
    </widget>
@@ -1138,7 +1333,7 @@ background-color: rgb(85, 255, 255);</string>
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1382</width>
+     <width>1572</width>
      <height>22</height>
     </rect>
    </property>

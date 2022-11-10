@@ -24,8 +24,8 @@ QT_BEGIN_MOC_NAMESPACE
 QT_WARNING_PUSH
 QT_WARNING_DISABLE_DEPRECATED
 struct qt_meta_stringdata_MainWindow_t {
-    const uint offsetsAndSize[70];
-    char stringdata0[768];
+    const uint offsetsAndSize[88];
+    char stringdata0[973];
 };
 #define QT_MOC_LITERAL(ofs, len) \
     uint(offsetof(qt_meta_stringdata_MainWindow_t, stringdata0) + ofs), len 
@@ -59,13 +59,22 @@ QT_MOC_LITERAL(469, 37), // "on_flood_fill_btn_8_connected..."
 QT_MOC_LITERAL(507, 27), // "on_select_old_color_clicked"
 QT_MOC_LITERAL(535, 38), // "on_fill_color_combo_currentTe..."
 QT_MOC_LITERAL(574, 37), // "on_toggle_set_vertex_scanline..."
-QT_MOC_LITERAL(612, 19), // "on_test_btn_clicked"
-QT_MOC_LITERAL(632, 23), // "on_draw_polygon_clicked"
-QT_MOC_LITERAL(656, 24), // "on_translate_btn_clicked"
-QT_MOC_LITERAL(681, 20), // "on_scale_btn_clicked"
-QT_MOC_LITERAL(702, 21), // "on_rotate_btn_clicked"
-QT_MOC_LITERAL(724, 20), // "on_shear_btn_clicked"
-QT_MOC_LITERAL(745, 22) // "on_reflect_btn_clicked"
+QT_MOC_LITERAL(612, 23), // "on_draw_polygon_clicked"
+QT_MOC_LITERAL(636, 24), // "on_translate_btn_clicked"
+QT_MOC_LITERAL(661, 20), // "on_scale_btn_clicked"
+QT_MOC_LITERAL(682, 21), // "on_rotate_btn_clicked"
+QT_MOC_LITERAL(704, 20), // "on_shear_btn_clicked"
+QT_MOC_LITERAL(725, 22), // "on_reflect_btn_clicked"
+QT_MOC_LITERAL(748, 24), // "on_scanline_algo_clicked"
+QT_MOC_LITERAL(773, 26), // "on_scanline_algo_2_clicked"
+QT_MOC_LITERAL(800, 23), // "on_set_corner_1_clicked"
+QT_MOC_LITERAL(824, 23), // "on_set_corner_2_clicked"
+QT_MOC_LITERAL(848, 14), // "on_csa_clicked"
+QT_MOC_LITERAL(863, 19), // "on_saveline_clicked"
+QT_MOC_LITERAL(883, 14), // "on_sha_clicked"
+QT_MOC_LITERAL(898, 22), // "on_setbezpoint_clicked"
+QT_MOC_LITERAL(921, 24), // "on_clearbezpoint_clicked"
+QT_MOC_LITERAL(946, 26) // "on_drawBezierCurve_clicked"
 
     },
     "MainWindow\0Mouse_Pressed\0\0showMousePosition\0"
@@ -85,10 +94,16 @@ QT_MOC_LITERAL(745, 22) // "on_reflect_btn_clicked"
     "on_select_old_color_clicked\0"
     "on_fill_color_combo_currentTextChanged\0"
     "on_toggle_set_vertex_scanline_clicked\0"
-    "on_test_btn_clicked\0on_draw_polygon_clicked\0"
+    "on_draw_polygon_clicked\0"
     "on_translate_btn_clicked\0on_scale_btn_clicked\0"
     "on_rotate_btn_clicked\0on_shear_btn_clicked\0"
-    "on_reflect_btn_clicked"
+    "on_reflect_btn_clicked\0on_scanline_algo_clicked\0"
+    "on_scanline_algo_2_clicked\0"
+    "on_set_corner_1_clicked\0on_set_corner_2_clicked\0"
+    "on_csa_clicked\0on_saveline_clicked\0"
+    "on_sha_clicked\0on_setbezpoint_clicked\0"
+    "on_clearbezpoint_clicked\0"
+    "on_drawBezierCurve_clicked"
 };
 #undef QT_MOC_LITERAL
 
@@ -98,7 +113,7 @@ static const uint qt_meta_data_MainWindow[] = {
       10,       // revision
        0,       // classname
        0,    0, // classinfo
-      29,   14, // methods
+      38,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -106,35 +121,44 @@ static const uint qt_meta_data_MainWindow[] = {
        0,       // signalCount
 
  // slots: name, argc, parameters, tag, flags, initial metatype offsets
-       1,    0,  188,    2, 0x0a,    1 /* Public */,
-       3,    1,  189,    2, 0x0a,    2 /* Public */,
-       6,    0,  192,    2, 0x08,    4 /* Private */,
-       7,    0,  193,    2, 0x08,    5 /* Private */,
-       8,    0,  194,    2, 0x08,    6 /* Private */,
-       9,    0,  195,    2, 0x08,    7 /* Private */,
-      10,    0,  196,    2, 0x08,    8 /* Private */,
-      11,    0,  197,    2, 0x08,    9 /* Private */,
-      12,    0,  198,    2, 0x08,   10 /* Private */,
-      13,    1,  199,    2, 0x08,   11 /* Private */,
-      15,    0,  202,    2, 0x08,   13 /* Private */,
-      16,    1,  203,    2, 0x08,   14 /* Private */,
-      17,    0,  206,    2, 0x08,   16 /* Private */,
-      18,    0,  207,    2, 0x08,   17 /* Private */,
-      19,    0,  208,    2, 0x08,   18 /* Private */,
-      20,    1,  209,    2, 0x08,   19 /* Private */,
-      22,    0,  212,    2, 0x08,   21 /* Private */,
-      23,    0,  213,    2, 0x08,   22 /* Private */,
-      24,    0,  214,    2, 0x08,   23 /* Private */,
-      25,    0,  215,    2, 0x08,   24 /* Private */,
-      26,    1,  216,    2, 0x08,   25 /* Private */,
-      27,    0,  219,    2, 0x08,   27 /* Private */,
-      28,    0,  220,    2, 0x08,   28 /* Private */,
-      29,    0,  221,    2, 0x08,   29 /* Private */,
-      30,    0,  222,    2, 0x08,   30 /* Private */,
-      31,    0,  223,    2, 0x08,   31 /* Private */,
-      32,    0,  224,    2, 0x08,   32 /* Private */,
-      33,    0,  225,    2, 0x08,   33 /* Private */,
-      34,    0,  226,    2, 0x08,   34 /* Private */,
+       1,    0,  242,    2, 0x0a,    1 /* Public */,
+       3,    1,  243,    2, 0x0a,    2 /* Public */,
+       6,    0,  246,    2, 0x08,    4 /* Private */,
+       7,    0,  247,    2, 0x08,    5 /* Private */,
+       8,    0,  248,    2, 0x08,    6 /* Private */,
+       9,    0,  249,    2, 0x08,    7 /* Private */,
+      10,    0,  250,    2, 0x08,    8 /* Private */,
+      11,    0,  251,    2, 0x08,    9 /* Private */,
+      12,    0,  252,    2, 0x08,   10 /* Private */,
+      13,    1,  253,    2, 0x08,   11 /* Private */,
+      15,    0,  256,    2, 0x08,   13 /* Private */,
+      16,    1,  257,    2, 0x08,   14 /* Private */,
+      17,    0,  260,    2, 0x08,   16 /* Private */,
+      18,    0,  261,    2, 0x08,   17 /* Private */,
+      19,    0,  262,    2, 0x08,   18 /* Private */,
+      20,    1,  263,    2, 0x08,   19 /* Private */,
+      22,    0,  266,    2, 0x08,   21 /* Private */,
+      23,    0,  267,    2, 0x08,   22 /* Private */,
+      24,    0,  268,    2, 0x08,   23 /* Private */,
+      25,    0,  269,    2, 0x08,   24 /* Private */,
+      26,    1,  270,    2, 0x08,   25 /* Private */,
+      27,    0,  273,    2, 0x08,   27 /* Private */,
+      28,    0,  274,    2, 0x08,   28 /* Private */,
+      29,    0,  275,    2, 0x08,   29 /* Private */,
+      30,    0,  276,    2, 0x08,   30 /* Private */,
+      31,    0,  277,    2, 0x08,   31 /* Private */,
+      32,    0,  278,    2, 0x08,   32 /* Private */,
+      33,    0,  279,    2, 0x08,   33 /* Private */,
+      34,    0,  280,    2, 0x08,   34 /* Private */,
+      35,    0,  281,    2, 0x08,   35 /* Private */,
+      36,    0,  282,    2, 0x08,   36 /* Private */,
+      37,    0,  283,    2, 0x08,   37 /* Private */,
+      38,    0,  284,    2, 0x08,   38 /* Private */,
+      39,    0,  285,    2, 0x08,   39 /* Private */,
+      40,    0,  286,    2, 0x08,   40 /* Private */,
+      41,    0,  287,    2, 0x08,   41 /* Private */,
+      42,    0,  288,    2, 0x08,   42 /* Private */,
+      43,    0,  289,    2, 0x08,   43 /* Private */,
 
  // slots: parameters
     QMetaType::Void,
@@ -158,6 +182,15 @@ static const uint qt_meta_data_MainWindow[] = {
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void, QMetaType::QString,   14,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
+    QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -199,13 +232,22 @@ void MainWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 19: _t->on_select_old_color_clicked(); break;
         case 20: _t->on_fill_color_combo_currentTextChanged((*reinterpret_cast< std::add_pointer_t<QString>>(_a[1]))); break;
         case 21: _t->on_toggle_set_vertex_scanline_clicked(); break;
-        case 22: _t->on_test_btn_clicked(); break;
-        case 23: _t->on_draw_polygon_clicked(); break;
-        case 24: _t->on_translate_btn_clicked(); break;
-        case 25: _t->on_scale_btn_clicked(); break;
-        case 26: _t->on_rotate_btn_clicked(); break;
-        case 27: _t->on_shear_btn_clicked(); break;
-        case 28: _t->on_reflect_btn_clicked(); break;
+        case 22: _t->on_draw_polygon_clicked(); break;
+        case 23: _t->on_translate_btn_clicked(); break;
+        case 24: _t->on_scale_btn_clicked(); break;
+        case 25: _t->on_rotate_btn_clicked(); break;
+        case 26: _t->on_shear_btn_clicked(); break;
+        case 27: _t->on_reflect_btn_clicked(); break;
+        case 28: _t->on_scanline_algo_clicked(); break;
+        case 29: _t->on_scanline_algo_2_clicked(); break;
+        case 30: _t->on_set_corner_1_clicked(); break;
+        case 31: _t->on_set_corner_2_clicked(); break;
+        case 32: _t->on_csa_clicked(); break;
+        case 33: _t->on_saveline_clicked(); break;
+        case 34: _t->on_sha_clicked(); break;
+        case 35: _t->on_setbezpoint_clicked(); break;
+        case 36: _t->on_clearbezpoint_clicked(); break;
+        case 37: _t->on_drawBezierCurve_clicked(); break;
         default: ;
         }
     }
@@ -219,7 +261,7 @@ const QMetaObject MainWindow::staticMetaObject = { {
     nullptr,
 qt_incomplete_metaTypeArray<qt_meta_stringdata_MainWindow_t
 , QtPrivate::TypeAndForceComplete<MainWindow, std::true_type>
-, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<QPoint &, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<int, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<int, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<QColor, std::false_type>, QtPrivate::TypeAndForceComplete<QPoint, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<const QString &, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>
+, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<QPoint &, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<int, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<int, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<QColor, std::false_type>, QtPrivate::TypeAndForceComplete<QPoint, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<const QString &, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>, QtPrivate::TypeAndForceComplete<void, std::false_type>
 
 
 >,
@@ -246,13 +288,13 @@ int MainWindow::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 29)
+        if (_id < 38)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 29;
+        _id -= 38;
     } else if (_c == QMetaObject::RegisterMethodArgumentMetaType) {
-        if (_id < 29)
+        if (_id < 38)
             *reinterpret_cast<QMetaType *>(_a[0]) = QMetaType();
-        _id -= 29;
+        _id -= 38;
     }
     return _id;
 }

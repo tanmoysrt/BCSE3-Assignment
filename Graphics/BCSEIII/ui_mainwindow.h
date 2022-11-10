@@ -13,6 +13,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QCheckBox>
 #include <QtWidgets/QComboBox>
+#include <QtWidgets/QDoubleSpinBox>
 #include <QtWidgets/QFrame>
 #include <QtWidgets/QGroupBox>
 #include <QtWidgets/QLabel>
@@ -87,7 +88,6 @@ public:
     QWidget *old_color;
     QWidget *fill_color;
     QComboBox *fill_color_combo;
-    QPushButton *test_btn;
     QGroupBox *groupBox_6;
     QSpinBox *translation_x;
     QSpinBox *translation_y;
@@ -95,11 +95,11 @@ public:
     QLabel *label_4;
     QLabel *label_6;
     QGroupBox *groupBox_7;
-    QSpinBox *scale_x;
-    QSpinBox *scale_y;
     QPushButton *scale_btn;
     QLabel *label_7;
     QLabel *label_8;
+    QDoubleSpinBox *scale_x;
+    QDoubleSpinBox *scale_y;
     QGroupBox *groupBox_8;
     QSpinBox *rotation_angle;
     QPushButton *rotate_btn;
@@ -114,7 +114,22 @@ public:
     QPushButton *reflect_btn;
     QCheckBox *reflect_x_axis;
     QCheckBox *reflect_y_axis;
+    QCheckBox *reflect_line;
+    QPushButton *scanline_algo;
+    QPushButton *scanline_algo_2;
     QCheckBox *reflect_origin;
+    QGroupBox *groupBox_11;
+    QPushButton *saveline;
+    QLabel *label_13;
+    QPushButton *set_corner_1;
+    QPushButton *set_corner_2;
+    QGroupBox *groupBox_12;
+    QPushButton *csa;
+    QPushButton *sha;
+    QGroupBox *groupBox_13;
+    QPushButton *setbezpoint;
+    QPushButton *clearbezpoint;
+    QPushButton *drawBezierCurve;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -123,7 +138,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(1382, 736);
+        MainWindow->resize(1572, 736);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         frame = new my_label(centralWidget);
@@ -339,9 +354,6 @@ public:
         fill_color_combo = new QComboBox(centralWidget);
         fill_color_combo->setObjectName(QString::fromUtf8("fill_color_combo"));
         fill_color_combo->setGeometry(QRect(1210, 90, 141, 31));
-        test_btn = new QPushButton(centralWidget);
-        test_btn->setObjectName(QString::fromUtf8("test_btn"));
-        test_btn->setGeometry(QRect(1430, 620, 131, 31));
         groupBox_6 = new QGroupBox(centralWidget);
         groupBox_6->setObjectName(QString::fromUtf8("groupBox_6"));
         groupBox_6->setGeometry(QRect(1020, 320, 341, 61));
@@ -364,12 +376,6 @@ public:
         groupBox_7 = new QGroupBox(centralWidget);
         groupBox_7->setObjectName(QString::fromUtf8("groupBox_7"));
         groupBox_7->setGeometry(QRect(1020, 390, 341, 61));
-        scale_x = new QSpinBox(groupBox_7);
-        scale_x->setObjectName(QString::fromUtf8("scale_x"));
-        scale_x->setGeometry(QRect(60, 30, 44, 26));
-        scale_y = new QSpinBox(groupBox_7);
-        scale_y->setObjectName(QString::fromUtf8("scale_y"));
-        scale_y->setGeometry(QRect(170, 30, 44, 26));
         scale_btn = new QPushButton(groupBox_7);
         scale_btn->setObjectName(QString::fromUtf8("scale_btn"));
         scale_btn->setGeometry(QRect(240, 30, 89, 25));
@@ -380,6 +386,12 @@ public:
         label_8->setObjectName(QString::fromUtf8("label_8"));
         label_8->setGeometry(QRect(140, 30, 21, 21));
         label_8->setMinimumSize(QSize(0, 15));
+        scale_x = new QDoubleSpinBox(groupBox_7);
+        scale_x->setObjectName(QString::fromUtf8("scale_x"));
+        scale_x->setGeometry(QRect(50, 30, 65, 26));
+        scale_y = new QDoubleSpinBox(groupBox_7);
+        scale_y->setObjectName(QString::fromUtf8("scale_y"));
+        scale_y->setGeometry(QRect(170, 30, 65, 26));
         groupBox_8 = new QGroupBox(centralWidget);
         groupBox_8->setObjectName(QString::fromUtf8("groupBox_8"));
         groupBox_8->setGeometry(QRect(1020, 460, 341, 61));
@@ -419,17 +431,62 @@ public:
         reflect_btn->setGeometry(QRect(240, 30, 89, 25));
         reflect_x_axis = new QCheckBox(groupBox_10);
         reflect_x_axis->setObjectName(QString::fromUtf8("reflect_x_axis"));
-        reflect_x_axis->setGeometry(QRect(80, 30, 61, 23));
+        reflect_x_axis->setGeometry(QRect(20, 30, 61, 23));
         reflect_y_axis = new QCheckBox(groupBox_10);
         reflect_y_axis->setObjectName(QString::fromUtf8("reflect_y_axis"));
-        reflect_y_axis->setGeometry(QRect(160, 30, 61, 23));
-        reflect_origin = new QCheckBox(groupBox_10);
+        reflect_y_axis->setGeometry(QRect(100, 30, 61, 23));
+        reflect_line = new QCheckBox(groupBox_10);
+        reflect_line->setObjectName(QString::fromUtf8("reflect_line"));
+        reflect_line->setGeometry(QRect(180, 30, 61, 23));
+        scanline_algo = new QPushButton(centralWidget);
+        scanline_algo->setObjectName(QString::fromUtf8("scanline_algo"));
+        scanline_algo->setGeometry(QRect(1380, 70, 181, 31));
+        scanline_algo_2 = new QPushButton(centralWidget);
+        scanline_algo_2->setObjectName(QString::fromUtf8("scanline_algo_2"));
+        scanline_algo_2->setGeometry(QRect(1380, 30, 181, 31));
+        reflect_origin = new QCheckBox(centralWidget);
         reflect_origin->setObjectName(QString::fromUtf8("reflect_origin"));
-        reflect_origin->setGeometry(QRect(10, 30, 71, 23));
+        reflect_origin->setGeometry(QRect(1500, 640, 71, 23));
+        groupBox_11 = new QGroupBox(centralWidget);
+        groupBox_11->setObjectName(QString::fromUtf8("groupBox_11"));
+        groupBox_11->setGeometry(QRect(1380, 120, 181, 171));
+        saveline = new QPushButton(groupBox_11);
+        saveline->setObjectName(QString::fromUtf8("saveline"));
+        saveline->setGeometry(QRect(10, 30, 161, 31));
+        label_13 = new QLabel(groupBox_11);
+        label_13->setObjectName(QString::fromUtf8("label_13"));
+        label_13->setGeometry(QRect(60, 70, 67, 17));
+        set_corner_1 = new QPushButton(groupBox_11);
+        set_corner_1->setObjectName(QString::fromUtf8("set_corner_1"));
+        set_corner_1->setGeometry(QRect(10, 90, 161, 31));
+        set_corner_2 = new QPushButton(groupBox_11);
+        set_corner_2->setObjectName(QString::fromUtf8("set_corner_2"));
+        set_corner_2->setGeometry(QRect(10, 130, 161, 31));
+        groupBox_12 = new QGroupBox(centralWidget);
+        groupBox_12->setObjectName(QString::fromUtf8("groupBox_12"));
+        groupBox_12->setGeometry(QRect(1380, 300, 171, 111));
+        csa = new QPushButton(groupBox_12);
+        csa->setObjectName(QString::fromUtf8("csa"));
+        csa->setGeometry(QRect(10, 30, 151, 31));
+        sha = new QPushButton(groupBox_12);
+        sha->setObjectName(QString::fromUtf8("sha"));
+        sha->setGeometry(QRect(10, 70, 151, 31));
+        groupBox_13 = new QGroupBox(centralWidget);
+        groupBox_13->setObjectName(QString::fromUtf8("groupBox_13"));
+        groupBox_13->setGeometry(QRect(1380, 430, 171, 151));
+        setbezpoint = new QPushButton(groupBox_13);
+        setbezpoint->setObjectName(QString::fromUtf8("setbezpoint"));
+        setbezpoint->setGeometry(QRect(10, 30, 151, 31));
+        clearbezpoint = new QPushButton(groupBox_13);
+        clearbezpoint->setObjectName(QString::fromUtf8("clearbezpoint"));
+        clearbezpoint->setGeometry(QRect(10, 70, 151, 31));
+        drawBezierCurve = new QPushButton(groupBox_13);
+        drawBezierCurve->setObjectName(QString::fromUtf8("drawBezierCurve"));
+        drawBezierCurve->setGeometry(QRect(10, 110, 151, 31));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 1382, 22));
+        menuBar->setGeometry(QRect(0, 0, 1572, 22));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
@@ -483,7 +540,6 @@ public:
         toggle_set_vertex_scanline->setText(QCoreApplication::translate("MainWindow", "Select Vertex", nullptr));
         draw_polygon->setText(QCoreApplication::translate("MainWindow", "Draw", nullptr));
         select_old_color->setText(QCoreApplication::translate("MainWindow", "Select Old Color", nullptr));
-        test_btn->setText(QCoreApplication::translate("MainWindow", "Test btn", nullptr));
         groupBox_6->setTitle(QCoreApplication::translate("MainWindow", "Translation", nullptr));
         translate_btn->setText(QCoreApplication::translate("MainWindow", "Translate", nullptr));
         label_4->setText(QCoreApplication::translate("MainWindow", "TX", nullptr));
@@ -503,7 +559,22 @@ public:
         reflect_btn->setText(QCoreApplication::translate("MainWindow", "Reflect", nullptr));
         reflect_x_axis->setText(QCoreApplication::translate("MainWindow", "X-Axis", nullptr));
         reflect_y_axis->setText(QCoreApplication::translate("MainWindow", "Y-Axis", nullptr));
+        reflect_line->setText(QCoreApplication::translate("MainWindow", "Line", nullptr));
+        scanline_algo->setText(QCoreApplication::translate("MainWindow", "Scanline Fill", nullptr));
+        scanline_algo_2->setText(QCoreApplication::translate("MainWindow", "Init Edge Table", nullptr));
         reflect_origin->setText(QCoreApplication::translate("MainWindow", "Origin", nullptr));
+        groupBox_11->setTitle(QCoreApplication::translate("MainWindow", "Select points", nullptr));
+        saveline->setText(QCoreApplication::translate("MainWindow", "Save Line ", nullptr));
+        label_13->setText(QCoreApplication::translate("MainWindow", "Window", nullptr));
+        set_corner_1->setText(QCoreApplication::translate("MainWindow", "Set corner 1", nullptr));
+        set_corner_2->setText(QCoreApplication::translate("MainWindow", "Set corner 2", nullptr));
+        groupBox_12->setTitle(QCoreApplication::translate("MainWindow", "Clipping", nullptr));
+        csa->setText(QCoreApplication::translate("MainWindow", "CSA", nullptr));
+        sha->setText(QCoreApplication::translate("MainWindow", "SHA", nullptr));
+        groupBox_13->setTitle(QCoreApplication::translate("MainWindow", "Beizer Curve", nullptr));
+        setbezpoint->setText(QCoreApplication::translate("MainWindow", "Set point", nullptr));
+        clearbezpoint->setText(QCoreApplication::translate("MainWindow", "Clear points", nullptr));
+        drawBezierCurve->setText(QCoreApplication::translate("MainWindow", "Draw", nullptr));
     } // retranslateUi
 
 };

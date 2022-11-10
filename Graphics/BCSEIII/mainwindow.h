@@ -20,6 +20,7 @@ public:
     ~MainWindow();
 
 
+
 private slots:
     void on_show_axes_clicked();
 
@@ -73,6 +74,26 @@ private slots:
 
     void on_reflect_btn_clicked();
 
+    void on_scanline_algo_clicked();
+
+    void on_scanline_algo_2_clicked();
+
+    void on_set_corner_1_clicked();
+
+    void on_set_corner_2_clicked();
+
+    void on_csa_clicked();
+
+    void on_saveline_clicked();
+
+    void on_sha_clicked();
+
+    void on_setbezpoint_clicked();
+
+    void on_clearbezpoint_clicked();
+
+    void on_drawBezierCurve_clicked();
+
 private:
     Ui::MainWindow *ui;
     QPoint p1,p2, cp1, cp2, centerPointAxis, cpe1;
@@ -85,6 +106,9 @@ private:
     QPoint lastP;
     bool addVertexToList=false;
     QList<QPoint> vertices ;
+    int clipper_points[4][2];
+    QList<QPair<QPoint, QPoint>> lines;
+
 
 //    void swap(int )
     int roundNo(float n);
@@ -95,6 +119,20 @@ private:
     void on_flood_fill_8_connected_util(QPoint p);
     void drawPolygon(QList<QPoint>,int,int,int);
     void on_Draw_clicked(int, int, int);
+    void initEdgeTable();
+    void storeEdgeInTable (int x1,int y1, int x2, int y2);
+    void drawWindow();
+    int getXCoordinate(int px);
+    int getYCoordinate(int py);
+    int toXPixel(int x);
+    int toYPixel(int y);
+    int computeCode(int xa, int ya);
+    void cohenSutherlandClip(int x1, int y1,int x2, int y2);
+    int x_intersect(int x1, int y1, int x2, int y2,int x3, int y3, int x4, int y4);
+    int y_intersect(int x1, int y1, int x2, int y2,int x3, int y3, int x4, int y4);
+    void clip(int x1, int y1, int x2, int y2);
+
 };
+
 
 #endif // MAINWINDOW_H
