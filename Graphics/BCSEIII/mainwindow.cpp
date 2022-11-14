@@ -160,8 +160,8 @@ void MainWindow::point(int x, int y, QRgb rgb){
     }
     ui->frame->setPixmap(QPixmap::fromImage(img));
 }
-QColor MainWindow::get_color_from_pixel(QPoint p){
-    return img.pixelColor(*(new QPoint(p.x()+1, p.y()+1)));
+QRgb MainWindow::get_color_from_pixel(QPoint p){
+    return img.pixel(*(new QPoint(p.x()+1, p.y()+1)));
 }
 void MainWindow::showMousePosition(QPoint &pos)
 {
@@ -537,12 +537,14 @@ void MainWindow::on_boundary_fill_btn_clicked(){
     qDebug() << lastP.x() << " " << lastP.y() << "\n";
     on_boundary_fill_btn_clicked_recur(lastP);
 }
+
+
 void MainWindow::on_boundary_fill_btn_clicked_recur(QPoint p){
     if(p.x() < 0 || p.y() < 0 || p.x() >= img.width() || p.y() >= img.height()) return;
     QRgb bordercolor = qRgb(143, 211, 0);
     QRgb fillcolor = qRgb(160, 130, 140);
     int gridSize = ui->grid_size->value();
-    if(img.pixel(p) == bordercolor || img.pixel(p) == fillcolor) return;
+    if(get_color_from_pixel(p) == bordercolor || get_color_from_pixel(p) == fillcolor) return;
 
 
     point(p.x(), p.y(), fillcolor);
@@ -562,7 +564,7 @@ void MainWindow::on_boundary_fill_8_connected_btn_clicked_recur(QPoint p){
     QRgb bordercolor = qRgb(143, 211, 0);
     QRgb fillcolor = qRgb(160, 130, 140);
     int gridSize = ui->grid_size->value();
-    if(img.pixel(p) == bordercolor || img.pixel(p) == fillcolor) return;
+    if(get_color_from_pixel(p) == bordercolor || get_color_from_pixel(p) == fillcolor) return;
 
 
     point(p.x(), p.y(), fillcolor);
@@ -580,7 +582,7 @@ void MainWindow::on_boundary_fill_8_connected_btn_clicked_recur(QPoint p){
 void MainWindow::on_flood_fill_util(QPoint p){
     if(p.x() < 0 || p.y() < 0 || p.x() >= img.width() || p.y() >= img.height()) return;
     int gridSize = ui->grid_size->value();
-    if(img.pixel(p) == oldColor ||  img.pixel(p) == qRgb(0,0,0)){
+    if(get_color_from_pixel(p) == oldColor ||  get_color_from_pixel(p) == qRgb(0,0,0)){
         point(p.x(), p.y(), fillColor);
         delay(10);
 
@@ -593,7 +595,7 @@ void MainWindow::on_flood_fill_util(QPoint p){
 void MainWindow::on_flood_fill_8_connected_util(QPoint p){
     if(p.x() < 0 || p.y() < 0 || p.x() >= img.width() || p.y() >= img.height()) return;
     int gridSize = ui->grid_size->value();
-    if(img.pixel(p) == oldColor || img.pixel(p) == qRgb(0,0,0)){
+    if(get_color_from_pixel(p) == oldColor || get_color_from_pixel(p) == qRgb(0,0,0)){
         point(p.x(), p.y(), fillColor);
         delay(10);
 

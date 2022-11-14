@@ -47,7 +47,6 @@ private slots:
     void on_set_center_point_ellipse_clicked();
 
     void on_boundary_fill_btn_clicked();
-    QColor get_color_from_pixel(QPoint p);
 
     void on_boundary_fill_8_connected_btn_clicked();
 
@@ -113,6 +112,7 @@ private:
 //    void swap(int )
     int roundNo(float n);
     int nearestPoint(int actualPoint, int gridSize);
+    QRgb get_color_from_pixel(QPoint p);
     void on_boundary_fill_btn_clicked_recur(QPoint p);
     void on_boundary_fill_8_connected_btn_clicked_recur(QPoint p);
     void on_flood_fill_util(QPoint p);
